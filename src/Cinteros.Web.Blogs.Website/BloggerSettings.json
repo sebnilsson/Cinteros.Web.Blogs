@@ -1,0 +1,14 @@
+﻿[
+    {
+        "blogId": "5585733423857160064",
+        "blogKey": "bloggerindraft",
+        "passwordKey": "BloggerViewController.Blog.Password",
+        "usernameKey": "BloggerViewController.Blog.Username"
+    },
+    {
+        "blogId": "3060480",
+        "blogKey": "status",
+        "passwordKey": "BloggerViewController.Blog.Password",
+        "usernameKey": "BloggerViewController.Blog.Username"
+    },
+]

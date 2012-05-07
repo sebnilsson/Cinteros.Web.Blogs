@@ -1,0 +1,9 @@
+﻿@model System.Collections.Generic.IEnumerable<Tuple<string, string, string>>
+
+<ul class="menu" id="menu-cinteros-standard">
+@foreach(var item in Model) {
+    <li class="menu-item menu-item-type-post_type">
+        <a href="@item.Item2" class="@item.Item3">@Html.Raw(item.Item1)</a>
+    </li>
+}
+</ul>

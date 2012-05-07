@@ -1,0 +1,54 @@
+﻿@model Cinteros.Web.Blogs.Website.Models.BlogListViewModel
+
+@{
+    
+}
+
+@helper RenderTags(IEnumerable<string> tags) {
+        <span class="post-info-label">Under:&nbsp;</span>
+        foreach(var tag in tags) {
+            bool isLast = (tag == tags.Last());
+            @Html.RouteLink(tag, "Tag", new { tagName = Url.Encode(tag.ToLowerInvariant()), })
+            if(!isLast) {
+                <text>&nbsp;|&nbsp;</text>
+            }
+        }
+}
+
+@foreach(var post in Model.Selection.Posts) {
+    <div class="blog-post">
+        <div class="post-head">
+            <div class="post-head-left">
+                <h2 class="post-title">
+                    <a href="@post.PermaLinkAbsolute">@post.Title</a>
+                </h2>
+                <div class="clear"></div>
+                <div class="post-info">
+                    <span class="post-date post-info-box">
+                        <span class="post-info-label">Postad:&nbsp;</span><span class="post-date-date">@post.Published.ToString("yyyy-MM-dd HH:mm")</span>
+                    </span>
+                    <span class="post-author post-info-box">
+                        <span class="post-info-label">Av:&nbsp;</span><span class="post-author-name">@post.Author.Name</span>                        
+                    </span>
+                    @if(post.Tags.Any()) {                
+                        <span class="post-tags post-info-box">
+                            @RenderTags(post.Tags)
+                        </span>
+                    }
+                </div>
+            </div>
+            @if(!string.IsNullOrWhiteSpace(post.Author.ImageUrl)) {
+                <div class="post-author-image"><img src="@post.Author.ImageUrl" /></div>
+            }
+        </div>
+        <div class="clear"></div>
+        <div class="post-content">
+            @Html.Raw(post.Content)
+        </div>
+    </div>
+    <div class="clear"></div>
+}
+
+@if(!Model.Selection.Posts.Any()) {
+    <div id="no-posts-message">Inga bloginlägg hittades under de givna kriterierna.</div>
+}
