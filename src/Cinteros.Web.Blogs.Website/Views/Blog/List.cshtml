@@ -1,18 +1,18 @@
 ﻿@model Cinteros.Web.Blogs.Website.Models.BlogListViewModel
 
 @{
-    
+    string currentAction = Convert.ToString(this.ViewContext.Controller.ValueProvider.GetValue("action").RawValue);
 }
 
 @helper RenderTags(IEnumerable<string> tags) {
         <span class="post-info-label">Under:&nbsp;</span>
-        foreach(var tag in tags) {
-            bool isLast = (tag == tags.Last());
+    foreach(var tag in tags) {
+        bool isLast = (tag == tags.Last());
             @Html.RouteLink(tag, "Tag", new { tagName = Url.Encode(tag.ToLowerInvariant()), })
-            if(!isLast) {
+        if(!isLast) {
                 <text>&nbsp;|&nbsp;</text>
-            }
         }
+    }
 }
 
 @foreach(var post in Model.Selection.Posts) {
@@ -52,3 +52,20 @@
 @if(!Model.Selection.Posts.Any()) {
     <div id="no-posts-message">Inga bloginlägg hittades under de givna kriterierna.</div>
 }
+
+@if(Model.Selection.HasPreviousItems || Model.Selection.HasNextItems) {
+    <div id="bottom-nav">
+        @if(Model.Selection.HasPreviousItems) {
+            <div id="nav-previous-items">
+                @Html.ActionLink("Visa tidigare inlägg", currentAction, new { page = Model.PageIndex - 1 }, null)
+            </div>
+        }
+
+        @if(Model.Selection.HasNextItems) {
+            <div id="nav-next-items">
+                @Html.ActionLink("Visa äldre inlägg", currentAction, new { page = Model.PageIndex + 1 }, null)
+            </div>
+        }
+    </div>
+}
+
