@@ -27,8 +27,7 @@
     @(Bundle.Css()
         .Add("~/content/reset.css")
         .Add("~/content/site.css")
-        //.WithMinifier<SquishIt.Framework.Minifiers.CSS.NullCompressor>()    
-        .ForceRelease()
+        //.ForceRelease()
         .MvcRender("~/bundled-styles_#.css"))
     
 </head>
@@ -53,7 +52,7 @@
             <div id="main-content">
                 <div id="sidebar">
                     <div class="sidebar-block">
-                        <label for="search-textbox" class="q">Sök</label>
+                        <label for="q" class="sidebar-label">Sök bland inlägg</label>
                         @using(var form = Html.BeginForm("Search", "Blog", FormMethod.Get)) {
                             @Html.TextBox("q")
                             <button type="submit">Sök</button>
@@ -81,7 +80,7 @@
     
     @(Html.BundleJavaScript()
         .Add("~/content/site.js")
-        .ForceRelease()
+        //.ForceRelease()
         .MvcRender("~/bundled-scripts_#.js"))
 </body>
 </html>

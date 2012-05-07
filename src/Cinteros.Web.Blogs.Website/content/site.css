@@ -171,18 +171,18 @@ h2:link { color: #222; }
     width: 120px;
 }
 
-sidebar #tags-nav ul {
+#sidebar #tags-nav ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-sidebar #archive-nav ul {
+#sidebar #archive-nav ul {
     padding: 0;
     margin: 0;
 }
 
-sidebar #archive-nav ul li {
+#sidebar #archive-nav ul li {
     margin-left: 14px;
 }
 
@@ -289,4 +289,20 @@ sidebar #archive-nav ul li {
 
 #blog-content #no-posts-message {
     font-style: italic;
+}
+
+#blog-content #bottom-nav {
+    background-color: #F2F2F2;
+    border: 1px solid #E9E8E8;
+    float: left;
+    padding: 5px 8px;
+    width: 622px;
+}
+
+#blog-content #nav-previous-items {
+    float: left;
+}
+
+#blog-content #nav-next-items {
+    float: right;
 }
