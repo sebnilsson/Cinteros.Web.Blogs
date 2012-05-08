@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-using BloggerViewController;
+using Blaven;
 using Cinteros.Web.Blogs.Website;
 
 namespace Cinteros.Web.Blogs.Website.Controllers {

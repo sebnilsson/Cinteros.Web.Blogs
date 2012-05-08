@@ -11,4 +11,10 @@
         "passwordKey": "BloggerViewController.Blog.Password",
         "usernameKey": "BloggerViewController.Blog.Username"
     },
+    {
+        "blogId": "36533086",
+        "blogKey": "marcusoft",
+        "passwordKey": "BloggerViewController.Blog.Password",
+        "usernameKey": "BloggerViewController.Blog.Username"
+    },
 ]

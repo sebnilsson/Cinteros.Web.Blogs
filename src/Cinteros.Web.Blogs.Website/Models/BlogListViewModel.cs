@@ -1,4 +1,4 @@
-﻿using BloggerViewController;
+﻿using Blaven;
 
 namespace Cinteros.Web.Blogs.Website.Models {
     public class BlogListViewModel {
