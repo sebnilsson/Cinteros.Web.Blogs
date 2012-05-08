@@ -3,7 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-using BloggerViewController;
+using Blaven;
 using Raven.Client;
 using Raven.Client.Document;
 
@@ -97,7 +97,7 @@ namespace Cinteros.Web.Blogs.Website {
             service.Update();
 
             Raven.Client.Indexes.IndexCreation.CreateIndexes(
-                typeof(BloggerViewController.Data.Indexes.BlogPostsOrderedByCreated).Assembly, _serviceConfig.DocumentStore);
+                typeof(Blaven.Data.Indexes.BlogPostsOrderedByCreated).Assembly, _serviceConfig.DocumentStore);
         }
 
         private static BlogServiceConfig _serviceConfig;

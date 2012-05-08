@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reference Assemblies", "Reference Assemblies", "{E4A5DF22-285B-4B21-A224-79FC014647A5}"
 	ProjectSection(SolutionItems) = preProject
-		Reference Assemblies\BloggerViewController.dll = Reference Assemblies\BloggerViewController.dll
+		reference assemblies\Blaven.dll = reference assemblies\Blaven.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{793C5964-DA48-4611-8534-47CB8DE83F4E}"
