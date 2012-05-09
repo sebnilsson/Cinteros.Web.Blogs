@@ -180,6 +180,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\html5.js" />
     <Content Include="content\images\post-head_bg.gif" />
     <Content Include="content\images\bg-wrap.gif" />
     <Content Include="content\images\cinteros-logo-logotyp_top.png" />
@@ -196,9 +197,6 @@
     <Content Include="libraries\SyntaxHighlighter\shBrushXml.js" />
     <Content Include="libraries\SyntaxHighlighter\shCore.css" />
     <Content Include="libraries\SyntaxHighlighter\shCore.js" />
-    <Content Include="libraries\SyntaxHighlighter\shCoreDefault.css" />
-    <Content Include="libraries\SyntaxHighlighter\shCoreRDark.css" />
-    <Content Include="libraries\SyntaxHighlighter\shThemeDefault.css" />
     <Content Include="libraries\SyntaxHighlighter\shThemeRDark.css" />
     <Content Include="robots.txt" />
     <Content Include="scripts\jquery-1.7.2-vsdoc.js" />
