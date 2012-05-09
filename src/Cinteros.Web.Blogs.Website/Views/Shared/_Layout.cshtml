@@ -23,7 +23,9 @@
     
     <script>document.documentElement.className = document.documentElement.className.replace('no-js', '');</script>
 
-    <script src="~/content/html5.js"></script>
+    @(Html.BundleJavaScript()
+        .Add("~/content/html5.js")
+        .MvcRender("~/bundled-head.js?v=#"))
     
     @(Html.BundleCss()
         .Add("~/content/reset.css")
@@ -31,7 +33,7 @@
         .Add("~/libraries/SyntaxHighlighter/shCore.css")
         .Add("~/libraries/SyntaxHighlighter/shThemeRDark.css")
         //.ForceRelease()
-        .MvcRender("~/bundled-styles_#.css"))
+        .MvcRender("~/bundled-sitestyles.css?v=#"))
     
 </head>
 <body>
@@ -91,6 +93,6 @@
         .Add("~/libraries/SyntaxHighlighter/shAutoloader.js")
         .Add("~/content/site.js")
         //.ForceRelease()
-        .MvcRender("~/bundled-scripts_#.js"))
+        .MvcRender("~/bundled-bodybottom.js?v=#"))
 </body>
 </html>

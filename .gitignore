@@ -54,5 +54,5 @@ readme.html
 packages/
 
 # Project-specific
-bundled-styles_*.css
-bundled-scripts_*.js
+bundled-*.js
+bundled-*.css
