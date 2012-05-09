@@ -80,7 +80,9 @@
     <script>window.jQuery || document.write('<script src="@Url.Content("~/scripts/jquery-1.7.2.min.js")"><\/script>')</script>
 
     <script>
-        var basePath = '@Url.Content("~/")';
+        var appSettings = {
+            basePath: '@Url.Content("~/")'
+        };
     </script>
     @(Html.BundleJavaScript()
         .Add("~/libraries/SyntaxHighlighter/shCore.js")
