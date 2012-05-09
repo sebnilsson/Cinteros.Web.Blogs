@@ -2,13 +2,30 @@
 
 @{
     string currentAction = Convert.ToString(this.ViewContext.Controller.ValueProvider.GetValue("action").RawValue);
+    
+    var previousItemRouteValues = new RouteValueDictionary(this.ViewContext.RouteData.Values);
+    previousItemRouteValues["page"] = Model.PageIndex - 1;
+    
+    var nextItemRouteValues = new RouteValueDictionary(this.ViewContext.RouteData.Values);
+    nextItemRouteValues["page"] = Model.PageIndex + 1;
+
+    string t = Request.QueryString["t"];
+    if(!string.IsNullOrWhiteSpace(t)) {
+        previousItemRouteValues["t"] = t;
+        nextItemRouteValues["t"] = t;
+    }
+    string q = Request.QueryString["q"];
+    if(!string.IsNullOrWhiteSpace(q)) {
+        previousItemRouteValues["q"] = q;
+        nextItemRouteValues["q"] = q;
+    }
 }
 
 @helper RenderTags(IEnumerable<string> tags) {
     <span class="post-info-label">Under:&nbsp;</span>
     foreach(var tag in tags) {
         bool isLast = (tag == tags.Last());
-            @Html.RouteLink(tag, "Tag", new { tagName = tag.ToLowerInvariant(), })
+            @Html.RouteLink(tag, "Tag", new { t = Url.Encode(tag.ToLowerInvariant()), })
         if(!isLast) {
                 <text>&nbsp;|&nbsp;</text>
         }
@@ -38,7 +55,7 @@
                 </div>
             </div>
             @if(!string.IsNullOrWhiteSpace(post.Author.ImageUrl)) {
-                <div class="post-author-image"><img src="@post.Author.ImageUrl" /></div>
+                <div class="post-author-image"><img src="@post.Author.ImageUrl" alt="@post.Author.Name" title="@post.Author.Name" /></div>
             }
         </div>
         <div class="clear"></div>
@@ -57,13 +74,13 @@
     <div id="bottom-nav">
         @if(Model.Selection.HasPreviousItems) {
             <div id="nav-previous-items">
-                @Html.ActionLink("Visa tidigare inlägg", currentAction, new { page = Model.PageIndex - 1 }, null)
+                @Html.ActionLink("Visa tidigare inlägg", currentAction, previousItemRouteValues, null)
             </div>
         }
 
         @if(Model.Selection.HasNextItems) {
             <div id="nav-next-items">
-                @Html.ActionLink("Visa äldre inlägg", currentAction, new { page = Model.PageIndex + 1 }, null)
+                @Html.ActionLink("Visa äldre inlägg", currentAction, nextItemRouteValues, null)
             </div>
         }
     </div>

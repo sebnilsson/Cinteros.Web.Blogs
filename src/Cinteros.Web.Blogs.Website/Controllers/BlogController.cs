@@ -16,7 +16,6 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
 
             ViewBag.Title = string.Format("Inlägg från {0}-{1}", year, month);
-
             return View("List", model);
         }
 
@@ -33,18 +32,18 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             return View("List", model);
         }
 
-        public ActionResult Blog(string blogKey, int? page = 1) {
-            int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
+        //public ActionResult Blog(string blogKey, int? page = 1) {
+        //    int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
-            var service = GetBlogService();
+        //    var service = GetBlogService();
 
-            var selection = service.GetSelection(pageIndex, blogKey);
+        //    var selection = service.GetSelection(pageIndex, blogKey);
 
-            var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
+        //    var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
 
-            ViewBag.Title = string.Format("Senaste inläggen från blog '{0}'", service.GetInfo(blogKey).Title);
-            return View("List", model);
-        }
+        //    ViewBag.Title = string.Format("Senaste inläggen från blog '{0}'", service.GetInfo(blogKey).Title);
+        //    return View("List", model);
+        //}
 
         public ActionResult Search(string q, int? page = 1) {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
@@ -59,17 +58,17 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             return View("List", model);
         }
 
-        public ActionResult Tag(string tagName, int? page = 1) {
-            tagName = HttpUtility.UrlDecode(tagName);
+        public ActionResult Tag(string t, int? page = 1) {
+            t = HttpUtility.UrlDecode(t);
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
             var service = GetBlogService();
 
-            var selection = service.GetTagsSelection(tagName, pageIndex);
+            var selection = service.GetTagsSelection(t, pageIndex);
 
             var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
 
-            ViewBag.Title = string.Format("Inlägg taggade som '{0}'", tagName);
+            ViewBag.Title = string.Format("Inlägg taggade som '{0}'", t);
             return View("List", model);
         }
 
