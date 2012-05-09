@@ -1,4 +1,4 @@
-/* Cinteros.se styles */
+/* ----- Cinteros.se styles ----- */
 html, body {
     height: 100%;
     margin: 0;
@@ -133,7 +133,7 @@ h2:link { color: #222; }
     width: 860px;
 }
 
-/* Blog-page specific */
+/* ----- Blog-page specific ----- */
 #main-content {
     padding-top: 15px;
 }
