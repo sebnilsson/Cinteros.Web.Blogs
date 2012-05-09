@@ -5,7 +5,7 @@
 }
 
 @helper RenderTags(IEnumerable<string> tags) {
-        <span class="post-info-label">Under:&nbsp;</span>
+    <span class="post-info-label">Under:&nbsp;</span>
     foreach(var tag in tags) {
         bool isLast = (tag == tags.Last());
             @Html.RouteLink(tag, "Tag", new { tagName = tag.ToLowerInvariant(), })
