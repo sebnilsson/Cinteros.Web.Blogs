@@ -306,3 +306,7 @@ h2:link { color: #222; }
 #blog-content #nav-next-items {
     float: right;
 }
+
+.syntaxhighlighter {
+    padding: 1px !important;
+}

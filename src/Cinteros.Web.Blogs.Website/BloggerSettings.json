@@ -2,19 +2,19 @@
     {
         "blogId": "5585733423857160064",
         "blogKey": "bloggerindraft",
-        "passwordKey": "BloggerViewController.Blog.Password",
-        "usernameKey": "BloggerViewController.Blog.Username"
+        "passwordKey": "Blaven.Blog.Password",
+        "usernameKey": "Blaven.Blog.Username"
     },
     {
         "blogId": "3060480",
         "blogKey": "status",
-        "passwordKey": "BloggerViewController.Blog.Password",
-        "usernameKey": "BloggerViewController.Blog.Username"
+        "passwordKey": "Blaven.Blog.Password",
+        "usernameKey": "Blaven.Blog.Username"
     },
     {
         "blogId": "36533086",
         "blogKey": "marcusoft",
-        "passwordKey": "BloggerViewController.Blog.Password",
-        "usernameKey": "BloggerViewController.Blog.Username"
+        "passwordKey": "Blaven.Blog.Password",
+        "usernameKey": "Blaven.Blog.Username"
     },
 ]
