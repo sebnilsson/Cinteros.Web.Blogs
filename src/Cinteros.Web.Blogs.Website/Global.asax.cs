@@ -33,12 +33,6 @@ namespace Cinteros.Web.Blogs.Website {
             );
 
             routes.MapRoute(
-                "Rss",
-                "rss",
-                new { controller = "Services", action = "Rss", }
-            );
-
-            routes.MapRoute(
                 "Search",
                 "search",
                 new { controller = "Blog", action = "Search", }
@@ -46,20 +40,26 @@ namespace Cinteros.Web.Blogs.Website {
 
             routes.MapRoute(
                 "Tag",
-                "tag/{tagName}",
+                "tag",
                 new { controller = "Blog", action = "Tag", }
             );
 
-            routes.MapRoute(
+            /*routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Blog", action = "Index", id = UrlParameter.Optional }
-            );
+            );*/
 
             routes.MapRoute(
                 name: "Info",
                 url: "Info/{action}",
                 defaults: new { controller = "Info", action = "Index", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "Services",
+                url: "Services/{action}",
+                defaults: new { controller = "Services", action = "Index", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(
@@ -81,29 +81,30 @@ namespace Cinteros.Web.Blogs.Website {
         }
 
         private static void SetupBloggerViewController() {
+            // Init Raven
             MvcApplication.DocumentStore = new DocumentStore() {
                 Url = AppSettingsService.RavenDbStoreUrl,
             };
             MvcApplication.DocumentStore.Initialize();
+
+            // Init Blaven config
+            _bloggerSettingsFilePath = HttpContext.Current.Server.MapPath(AppSettingsService.BloggerSettingsPath);
+            StartWatchConfig(_bloggerSettingsFilePath);
             
-            string bloggerSettingsFilePath = HttpContext.Current.Server.MapPath(AppSettingsService.BloggerSettingsPath);
-            StartWatchConfig(bloggerSettingsFilePath);
-
-            _serviceConfig = new BlogServiceConfig(bloggerSettingsFilePath) {
-                DocumentStore = MvcApplication.DocumentStore,
-            };
-
             var service = GetBlogService();
             service.Update();
 
             Raven.Client.Indexes.IndexCreation.CreateIndexes(
-                typeof(Blaven.Data.Indexes.BlogPostsOrderedByCreated).Assembly, _serviceConfig.DocumentStore);
+                typeof(Blaven.Data.Indexes.BlogPostsOrderedByCreated).Assembly, MvcApplication.DocumentStore);
         }
 
-        private static BlogServiceConfig _serviceConfig;
+        private static string _bloggerSettingsFilePath;
 
         internal static BlogService GetBlogService() {
-            var service = new BlogService(_serviceConfig);
+            var config = new BlogServiceConfig(_bloggerSettingsFilePath) {
+                DocumentStore = MvcApplication.DocumentStore,
+            };
+            var service = new BlogService(config);
             return service;
         }
 
