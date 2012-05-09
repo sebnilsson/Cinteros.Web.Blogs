@@ -1,9 +1,11 @@
 ﻿$(function () {
+    'use strict';
     initFunctions.syntaxHighlighter(appSettings.basePath);
 });
 
 var initFunctions = {
     syntaxHighlighter: function (basePath) {
+        'use strict';
         SyntaxHighlighter.autoloader(
             'csharp c-sharp ' + basePath + 'libraries/SyntaxHighlighter/shBrushCSharp.js',
             'css ' + basePath + 'libraries/SyntaxHighlighter/shBrushCss.js',
