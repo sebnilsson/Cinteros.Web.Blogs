@@ -225,7 +225,7 @@
     <Content Include="Views\Blog\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AppSettings.config" />
+    <Content Include="AppHbAppSettings.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BloggerSettings.json" />
@@ -233,7 +233,6 @@
     <Content Include="Views\Shared\Tags.cshtml" />
     <Content Include="Views\Shared\Archive.cshtml" />
     <Content Include="Views\Shared\Blogs.cshtml" />
-    <Content Include="Local.AppSettings.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
