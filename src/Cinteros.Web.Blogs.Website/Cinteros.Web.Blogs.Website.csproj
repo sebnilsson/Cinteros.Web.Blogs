@@ -225,9 +225,6 @@
     <Content Include="Views\Blog\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AppHbAppSettings.config" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="BloggerSettings.json" />
     <Content Include="Views\Shared\MenuItems.cshtml" />
     <Content Include="Views\Shared\Tags.cshtml" />
