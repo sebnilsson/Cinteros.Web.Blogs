@@ -14,7 +14,18 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
 
             var postDates = service.GetArchiveCount();
 
-            return PartialView("Archive", postDates);
+            return PartialView(postDates);
+        }
+
+        public ActionResult Blogs() {
+            var service = GetBlogService();
+
+            var blogs = from setting in service.Config.BloggerSettings
+                        let info = service.GetInfo(setting.BlogKey)
+                        orderby info.Title ascending
+                        select info;
+
+            return PartialView(blogs);
         }
 
         public ActionResult Tags() {
@@ -22,7 +33,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
 
             var tags = service.GetTagsCount();
 
-            return PartialView("Tags", tags);
+            return PartialView(tags);
         }
 
         public ActionResult MenuItems() {
@@ -73,7 +84,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                 }
             }
             
-            return PartialView("MenuItems", menuItems ?? new List<Tuple<string, string, string>>(0));
+            return PartialView(menuItems ?? new List<Tuple<string, string, string>>(0));
         }
 
         private static readonly string WebsiteUrl = "http://www.cinteros.se/";

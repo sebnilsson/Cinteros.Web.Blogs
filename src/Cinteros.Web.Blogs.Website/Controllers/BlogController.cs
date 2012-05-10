@@ -70,6 +70,20 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
 
             ViewBag.Title = string.Format("Inlägg taggade som '{0}'", t);
             return View("List", model);
+
+            System.Security.Principal.IPrincipal originalUser = System.Web.HttpContext.Current.User;
+            
+            try {
+                var ntIdentity = new System.Security.Principal.WindowsIdentity("userPrincipalName");
+                System.Web.HttpContext.Current.User = new System.Security.Principal.WindowsPrincipal(ntIdentity);
+            }
+            catch(Exception) {
+                throw;
+            }
+            finally {
+                System.Web.HttpContext.Current.User = originalUser;
+            }
+
         }
 
     }
