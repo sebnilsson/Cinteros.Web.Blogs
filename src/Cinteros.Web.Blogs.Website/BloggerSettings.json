@@ -1,19 +1,25 @@
 ﻿[
     {
-        "blogId": "5585733423857160064",
-        "blogKey": "bloggerindraft",
+        "blogId": "9038600703579445815",
+        "blogKey": "teamblog",
         "passwordKey": "Blaven.Blog.Password",
         "usernameKey": "Blaven.Blog.Username"
     },
     {
-        "blogId": "3060480",
-        "blogKey": "status",
+        "blogId": "4569166503453764258",
+        "blogKey": "allanvarcoe",
         "passwordKey": "Blaven.Blog.Password",
         "usernameKey": "Blaven.Blog.Username"
     },
     {
-        "blogId": "36533086",
-        "blogKey": "marcusoft",
+        "blogId": "3534158126191039150",
+        "blogKey": "jonasrapp",
+        "passwordKey": "Blaven.Blog.Password",
+        "usernameKey": "Blaven.Blog.Username"
+    },
+    {
+        "blogId": "5763306367782575415",
+        "blogKey": "hanslinder",
         "passwordKey": "Blaven.Blog.Password",
         "usernameKey": "Blaven.Blog.Username"
     }
