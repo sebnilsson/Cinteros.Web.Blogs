@@ -225,7 +225,7 @@
     <Content Include="Views\Blog\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BloggerSettings.json" />
+    <Content Include="BloggerSettings.json" />
     <Content Include="Views\Shared\MenuItems.cshtml" />
     <Content Include="Views\Shared\Tags.cshtml" />
     <Content Include="Views\Shared\Archive.cshtml" />
