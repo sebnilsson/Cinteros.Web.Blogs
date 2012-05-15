@@ -67,7 +67,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             var service = GetBlogService();
             service.Update(true);
 
-            return new EmptyResult();
+            return this.RedirectToRoute("Empty");
         }
     }
 }
