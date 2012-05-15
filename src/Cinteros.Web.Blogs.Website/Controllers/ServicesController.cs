@@ -65,7 +65,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
 
         public ActionResult UpdateBlogs() {
             var service = GetBlogService();
-            service.Update();
+            service.Update(true);
 
             return new EmptyResult();
         }
