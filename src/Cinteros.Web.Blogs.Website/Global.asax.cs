@@ -83,6 +83,7 @@ namespace Cinteros.Web.Blogs.Website {
         private static void SetupBloggerViewController() {
             // Init Raven
             MvcApplication.DocumentStore = new DocumentStore() {
+                ApiKey = AppSettingsService.RavenDbStoreApiKey,
                 Url = AppSettingsService.RavenDbStoreUrl,
             };
             MvcApplication.DocumentStore.Initialize();
