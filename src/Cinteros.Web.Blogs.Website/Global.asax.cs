@@ -93,10 +93,10 @@ namespace Cinteros.Web.Blogs.Website {
             StartWatchConfig(_bloggerSettingsFilePath);
             
             var service = GetBlogService();
-            service.Update();
+            service.Refresh();
 
             Raven.Client.Indexes.IndexCreation.CreateIndexes(
-                typeof(Blaven.Data.Indexes.BlogPostsOrderedByCreated).Assembly, MvcApplication.DocumentStore);
+                typeof(Blaven.RavenDb.Indexes.BlogPostsOrderedByCreated).Assembly, MvcApplication.DocumentStore);
         }
 
         private static string _bloggerSettingsFilePath;
