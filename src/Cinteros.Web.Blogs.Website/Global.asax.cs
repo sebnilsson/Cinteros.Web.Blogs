@@ -101,10 +101,14 @@ namespace Cinteros.Web.Blogs.Website {
 
         private static string _bloggerSettingsFilePath;
 
-        internal static BlogService GetBlogService() {
+        internal static BlogService GetBlogService(bool forceSynchronous = false) {
             var config = new BlogServiceConfig(_bloggerSettingsFilePath) {
                 DocumentStore = MvcApplication.DocumentStore,
             };
+            if(forceSynchronous) {
+                config.RefreshMode = BlogRefreshMode.Synchronously;
+            }
+
             var service = new BlogService(config);
             return service;
         }

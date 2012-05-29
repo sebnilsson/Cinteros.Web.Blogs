@@ -26,8 +26,8 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             return View("Error", model);
         }
 
-        internal BlogService GetBlogService() {
-            return MvcApplication.GetBlogService();
+        internal BlogService GetBlogService(bool forceSynchronous = false) {
+            return MvcApplication.GetBlogService(forceSynchronous);
         }
     }
 }
