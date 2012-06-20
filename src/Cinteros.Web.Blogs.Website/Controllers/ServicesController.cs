@@ -9,13 +9,14 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
     public class ServicesController : BaseController {
         private const int DefaultPageSize = 20;
         private const int MaxPageSize = 50;
-        private static XNamespace _contentNs = XNamespace.Get("http://purl.org/rss/1.0/modules/content/");
 
         public ActionResult BasicRss(int? pageSize = DefaultPageSize) {
+            Response.ContentType = "application/rss+xml";
             return GetRss(pageSize, false);
         }
 
         public ActionResult Rss(int? pageSize = DefaultPageSize) {
+            Response.ContentType = "application/rss+xml";
             return GetRss(pageSize, true);
         }
 
@@ -34,10 +35,9 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                           new XDeclaration("1.0", "UTF-8", "yes"),
                           new XElement("rss",
                               new XAttribute("version", "2.0"),
-                              new XAttribute(XNamespace.Xmlns + "content", _contentNs),
                               new XElement("channel",
                                   new XElement("title", "Cinteros Blogs RSS"),
-                                  new XElement("link", string.Format("http://{0}/", Request.Url.Host)),
+                                  new XElement("link", Url.RouteUrl("Empty", null, "http", Request.Url.Host)),
                                   new XElement("description", "RSS feed containing blog-posts from bloggers at Cinteros AB."),
                                   rssItems
                               )
@@ -54,8 +54,9 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                 new XElement("pubDate", post.Published.ToString("r")),
             };
             if(includeBlogContent) {
-                itemElements = itemElements.Concat(new[] { new XElement(_contentNs + "encoded", new XCData(post.Content)) })
-                    .ToArray();
+                itemElements = itemElements.Concat(new[] {
+                    new XElement("description", post.Content),
+                }).ToArray();
             }
 
             return new XElement("item",
