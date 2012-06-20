@@ -1,11 +1,12 @@
-﻿(function () {
+﻿(function (window, document) {
     'use strict';
+
     $(function () {
-        initFunctions.syntaxHighlighter(appSettings.basePath);
+        cinterosBlog.initSyntaxHighlighter(appSettings.basePath);
     });
 
-    var initFunctions = {
-        syntaxHighlighter: function (basePath) {
+    var cinterosBlog = {
+        initSyntaxHighlighter: function (basePath) {
             SyntaxHighlighter.autoloader(
                 'csharp c-sharp ' + basePath + 'libraries/SyntaxHighlighter/shBrushCSharp.js',
                 'css ' + basePath + 'libraries/SyntaxHighlighter/shBrushCss.js',
@@ -16,9 +17,8 @@
 
             SyntaxHighlighter.all({
                 bloggerMode: true,
-                //clipboardSwf: 'http://alexgorbatchev.com/pub/sh/current/scripts/clipboard.swf',
                 toolbar: false
             });
         }
     };
-})();
+})(window, document, undefined);

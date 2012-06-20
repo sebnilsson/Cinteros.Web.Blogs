@@ -34,7 +34,7 @@
         .Add("~/libraries/SyntaxHighlighter/shCore.css")
         .Add("~/libraries/SyntaxHighlighter/shThemeDefault.css")
         //.ForceRelease()
-        .MvcRender("~/bundled-sitestyles.css?v=#"))
+        .MvcRender("~/bundled-site.css?v=#"))
     
 </head>
 <body>
@@ -96,8 +96,11 @@
     @(Html.BundleJavaScript()
         .Add("~/libraries/SyntaxHighlighter/shCore.js")
         .Add("~/libraries/SyntaxHighlighter/shAutoloader.js")
+        .ForceRelease()
+        .MvcRender("~/bundled-libraries.js?v=#"))
+
+    @(Html.BundleJavaScript()        
         .Add("~/content/site.js")
-        //.ForceRelease()
-        .MvcRender("~/bundled-bodybottom.js?v=#"))
+        .MvcRender("~/bundled-site.js?vs=#"))
 </body>
 </html>
