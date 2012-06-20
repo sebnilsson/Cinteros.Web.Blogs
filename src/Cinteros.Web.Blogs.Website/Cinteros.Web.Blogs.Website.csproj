@@ -196,6 +196,11 @@
     <Content Include="libraries\SyntaxHighlighter\shBrushXml.js" />
     <Content Include="libraries\SyntaxHighlighter\shCore.css" />
     <Content Include="libraries\SyntaxHighlighter\shCore.js" />
+    <Content Include="libraries\SyntaxHighlighter\shCoreDefault.css" />
+    <Content Include="libraries\SyntaxHighlighter\shCoreMidnight.css" />
+    <Content Include="libraries\SyntaxHighlighter\shCoreRDark.css" />
+    <Content Include="libraries\SyntaxHighlighter\shThemeDefault.css" />
+    <Content Include="libraries\SyntaxHighlighter\shThemeMidnight.css" />
     <Content Include="libraries\SyntaxHighlighter\shThemeRDark.css" />
     <Content Include="robots.txt" />
     <Content Include="scripts\jquery-1.7.2-vsdoc.js" />
