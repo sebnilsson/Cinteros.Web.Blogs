@@ -7,16 +7,17 @@ using Blaven;
 
 namespace Cinteros.Web.Blogs.Website.Controllers {
     public class ServicesController : BaseController {
+        private const string ContentType = "text/xml";
         private const int DefaultPageSize = 20;
         private const int MaxPageSize = 50;
 
         public ActionResult BasicRss(int? pageSize = DefaultPageSize) {
-            Response.ContentType = "application/rss+xml";
+            Response.ContentType = ContentType;
             return GetRss(pageSize, false);
         }
 
         public ActionResult Rss(int? pageSize = DefaultPageSize) {
-            Response.ContentType = "application/rss+xml";
+            Response.ContentType = ContentType;
             return GetRss(pageSize, true);
         }
 
@@ -44,7 +45,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                           )
                       );
 
-            return Content(rss.ToString(), "application/rss+xml");
+            return Content(rss.ToString(), ContentType);
         }
 
         private static XElement GetPostXElement(BlogPost post, bool includeBlogContent) {
