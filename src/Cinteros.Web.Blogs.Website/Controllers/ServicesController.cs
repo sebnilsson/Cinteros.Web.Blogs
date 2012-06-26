@@ -23,7 +23,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         private ActionResult GetRss(int? pageSize = DefaultPageSize, bool includeBlogContent = true) {
             int actualPageSize = Math.Min(pageSize.GetValueOrDefault(DefaultPageSize), MaxPageSize);
 
-            var service = GetBlogService(forceSynchronous: true);
+            var service = GetBlogService();
             service.Config.PageSize = actualPageSize;
 
             var selection = service.GetSelection(0);
