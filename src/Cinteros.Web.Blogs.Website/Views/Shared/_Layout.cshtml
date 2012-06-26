@@ -5,6 +5,7 @@
     bool hasPrefixText = !string.IsNullOrWhiteSpace(viewBagTitle);
     
     string pageTitle = (hasPrefixText) ? string.Format("{0} - {1}", viewBagTitle, suffixText) : suffixText;
+    string rssUrl = "http://" + Request.Url.Host + Url.RouteUrl("RSS", null);
 }
 <!DOCTYPE html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -20,7 +21,7 @@
     <meta name="viewport" content="width=device-width" />
     
     <link rel="shortcut icon" href="~/favicon.gif"/>
-    <link rel="alternate" type="application/rss+xml" title="Cinteros Blogs RSS" href="@("http://" + Request.Url.Host + Url.RouteUrl("RSS", null))" />
+    <link rel="alternate" type="application/rss+xml" title="Cinteros Blogs RSS" href="@rssUrl" />
     
     <script>document.documentElement.className = document.documentElement.className.replace('no-js', '');</script>
 
@@ -63,6 +64,9 @@
                             @Html.TextBox("q")
                             <button type="submit">Sök</button>
                         }
+                    </div>
+                    <div id="rss-box" class="sidebar-block">
+                        <a href="@Url.RouteUrl("rss")"><span>Prenumerera via RSS</span> <img src="~/content/images/rss_20x20.png" alt="RSS" /></a>
                     </div>
                     <div class="sidebar-block">
                         <div class="sidebar-label">Taggar</div>

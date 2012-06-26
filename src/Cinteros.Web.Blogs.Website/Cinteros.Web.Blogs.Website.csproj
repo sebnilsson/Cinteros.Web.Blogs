@@ -190,6 +190,7 @@
     <Content Include="content\images\bg-wrap.gif" />
     <Content Include="content\images\cinteros-logo-logotyp_top.png" />
     <Content Include="content\images\icon_american_flag.jpg" />
+    <Content Include="content\images\rss_20x20.png" />
     <Content Include="content\reset.css" />
     <Content Include="favicon.gif" />
     <Content Include="Global.asax" />

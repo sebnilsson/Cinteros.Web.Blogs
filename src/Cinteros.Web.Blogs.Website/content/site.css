@@ -156,6 +156,11 @@ h2:link { color: #222; }
     padding: 15px;
 }
 
+.sidebar-block#rss-box img {
+    margin-bottom: 5px;
+    margin-left: 0.5em;
+}
+
 .sidebar-label {
     border-bottom: 1px dashed #CCCCCC;
     color: #CC9D45;
