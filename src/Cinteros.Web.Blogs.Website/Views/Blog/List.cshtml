@@ -2,10 +2,10 @@
 
 @{
     string currentAction = Convert.ToString(this.ViewContext.Controller.ValueProvider.GetValue("action").RawValue);
-    
+
     var previousItemRouteValues = new RouteValueDictionary(this.ViewContext.RouteData.Values);
     previousItemRouteValues["page"] = Model.PageIndex - 1;
-    
+
     var nextItemRouteValues = new RouteValueDictionary(this.ViewContext.RouteData.Values);
     nextItemRouteValues["page"] = Model.PageIndex + 1;
 
@@ -61,6 +61,7 @@
         <div class="clear"></div>
         <div class="post-content">
             @Html.Raw(post.Content)
+            <div class="clear"></div>
         </div>
     </div>
     <div class="clear"></div>
