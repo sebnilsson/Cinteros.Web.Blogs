@@ -144,7 +144,7 @@ h2:link { color: #222; }
     width: 200px;
 }
 
-#sidebar ul li a {
+#sidebar ul li a, #sidebar a {
     color: #636363;
 }
 
