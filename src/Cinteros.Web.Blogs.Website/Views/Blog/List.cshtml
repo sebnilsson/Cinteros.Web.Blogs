@@ -19,6 +19,12 @@
         previousItemRouteValues["q"] = q;
         nextItemRouteValues["q"] = q;
     }
+
+    Func<DateTime, DateTime> ToLocalDate = (dateTime) => {
+        TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
+        DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(dateTime, timeZone);
+        return localDate;
+    };
 }
 
 @helper RenderTags(IEnumerable<string> tags) {
@@ -42,7 +48,7 @@
                 <div class="clear"></div>
                 <div class="post-info">
                     <span class="post-date post-info-box">
-                        <span class="post-info-label">Postad:&nbsp;</span><span class="post-date-date">@post.Published.ToString("yyyy-MM-dd HH:mm")</span>
+                        <span class="post-info-label">Postad:&nbsp;</span><span class="post-date-date">@ToLocalDate(post.Published).ToString("yyyy-MM-dd HH:mm")</span>
                     </span>
                     <span class="post-author post-info-box">
                         <span class="post-info-label">Av:&nbsp;</span><span class="post-author-name">@post.Author.Name</span>                        
