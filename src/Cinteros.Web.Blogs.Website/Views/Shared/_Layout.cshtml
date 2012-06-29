@@ -31,10 +31,14 @@
     @(Html.BundleCss()
         .Add("~/content/reset.css")
         .Add("~/content/site.css")
+        .MvcRender("~/bundled-site.css?v=#"))
+
+        
+    @(Html.BundleCss()
         .Add("~/libraries/SyntaxHighlighter/shCore.css")
         .Add("~/libraries/SyntaxHighlighter/shThemeDefault.css")
-        //.ForceRelease()
-        .MvcRender("~/bundled-site.css?v=#"))
+        .WithoutRevisionHash()
+        .MvcRender("~/bundled-syntaxhighlighter.css"))
     
 </head>
 <body>
@@ -98,12 +102,18 @@
     </script>
     @(Html.BundleJavaScript()
         .Add("~/libraries/SyntaxHighlighter/shCore.js")
-        .Add("~/libraries/SyntaxHighlighter/shAutoloader.js")
+        .Add("~/libraries/SyntaxHighlighter/shBrushCSharp.js")
+        .Add("~/libraries/SyntaxHighlighter/shBrushCss.js")
+        .Add("~/libraries/SyntaxHighlighter/shBrushJScript.js")
+        .Add("~/libraries/SyntaxHighlighter/shBrushSql.js")
+        .Add("~/libraries/SyntaxHighlighter/shBrushXml.js")
+        .Add("~/content/syntaxhighlighter-init.js")
         .ForceRelease()
-        .MvcRender("~/bundled-libraries.js?v=#"))
+        .WithoutRevisionHash()
+        .MvcRender("~/bundled-syntaxhighlighter.js"))
 
-    @(Html.BundleJavaScript()        
+    @*@(Html.BundleJavaScript()        
         .Add("~/content/site.js")
-        .MvcRender("~/bundled-site.js?vs=#"))
+        .MvcRender("~/bundled-site.js?vs=#"))*@
 </body>
 </html>

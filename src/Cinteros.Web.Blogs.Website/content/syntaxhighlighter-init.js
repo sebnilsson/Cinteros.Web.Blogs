@@ -2,10 +2,9 @@
     'use strict';
 
     $(function () {
-        
+        SyntaxHighlighter.all({
+            bloggerMode: true,
+            toolbar: false
+        });
     });
-
-    var cinterosBlog = {
-        
-    };
 })(window, document, undefined);
