@@ -191,6 +191,14 @@ h2:link { color: #222; }
     margin-left: 14px;
 }
 
+#blog-intro {
+    background-color: #F2F2F2;
+    border: 1px solid #555;
+    font-style: italic;
+    margin-bottom: 1.5em;
+    padding: 0.5em;
+}
+
 #blog-content {
     float: left;
     /*background-color: #F2F2F2;*/
