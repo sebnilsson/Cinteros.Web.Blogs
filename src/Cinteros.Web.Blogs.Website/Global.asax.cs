@@ -99,7 +99,7 @@ namespace Cinteros.Web.Blogs.Website {
             StartWatchConfig(_bloggerSettingsFilePath);
             
             var service = GetBlogService();
-            service.Refresh();
+            service.Init();
 
             Raven.Client.Indexes.IndexCreation.CreateIndexes(
                 typeof(Blaven.RavenDb.Indexes.BlogPostsOrderedByCreated).Assembly, MvcApplication.DocumentStore);
@@ -107,13 +107,11 @@ namespace Cinteros.Web.Blogs.Website {
 
         private static string _bloggerSettingsFilePath;
 
-        internal static BlogService GetBlogService(bool forceSynchronous = false) {
+        internal static BlogService GetBlogService(bool asyncUpdate = true) {
             var config = new BlogServiceConfig(_bloggerSettingsFilePath) {
+                RefreshAsync = asyncUpdate,
                 DocumentStore = MvcApplication.DocumentStore,
             };
-            if(forceSynchronous) {
-                config.RefreshMode = BlogRefreshMode.Synchronously;
-            }
 
             var service = new BlogService(config);
             return service;
