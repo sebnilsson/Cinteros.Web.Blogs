@@ -31,6 +31,7 @@
     @(Html.BundleCss()
         .Add("~/content/reset.css")
         .Add("~/content/site.css")
+        .Add("~/libraries/FancyBox/jquery.fancybox.css")
         .MvcRender("~/bundled-site.css?v=#"))
 
         
@@ -112,8 +113,9 @@
         .WithoutRevisionHash()
         .MvcRender("~/bundled-syntaxhighlighter.js"))
 
-    @*@(Html.BundleJavaScript()        
+    @(Html.BundleJavaScript()
+        .Add("~/libraries/FancyBox/jquery.fancybox.js") 
         .Add("~/content/site.js")
-        .MvcRender("~/bundled-site.js?vs=#"))*@
+        .MvcRender("~/bundled-site.js?vs=#"))
 </body>
 </html>

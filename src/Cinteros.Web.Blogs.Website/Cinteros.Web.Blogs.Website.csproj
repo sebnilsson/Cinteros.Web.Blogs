@@ -192,9 +192,16 @@
     <Content Include="content\images\icon_american_flag.jpg" />
     <Content Include="content\images\rss_20x20.png" />
     <Content Include="content\reset.css" />
+    <Content Include="content\syntaxhighlighter-init.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="content\site.css" />
+    <Content Include="libraries\FancyBox\blank.gif" />
+    <Content Include="libraries\FancyBox\fancybox_loading.gif" />
+    <Content Include="libraries\FancyBox\fancybox_sprite.png" />
+    <Content Include="libraries\FancyBox\jquery.fancybox.css" />
+    <Content Include="libraries\FancyBox\jquery.fancybox.js" />
+    <Content Include="libraries\FancyBox\jquery.fancybox.pack.js" />
     <Content Include="libraries\SyntaxHighlighter\shAutoloader.js" />
     <Content Include="libraries\SyntaxHighlighter\shBrushCSharp.js" />
     <Content Include="libraries\SyntaxHighlighter\shBrushCss.js" />
