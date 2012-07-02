@@ -87,28 +87,19 @@ namespace Cinteros.Web.Blogs.Website {
         }
 
         private static void SetupBloggerViewController() {
-            // Init Raven
-            MvcApplication.DocumentStore = new DocumentStore() {
-                ApiKey = AppSettingsService.RavenDbStoreApiKey,
-                Url = AppSettingsService.RavenDbStoreUrl,
-            };
-            MvcApplication.DocumentStore.Initialize();
-
-            // Init Blaven config
-            StartWatchConfig(AppSettingsService.BloggerSettingsPath);
-            
             var service = GetBlogService();
+            MvcApplication.DocumentStore = service.Config.DocumentStore;
 
             Raven.Client.Indexes.IndexCreation.CreateIndexes(
                 typeof(Blaven.RavenDb.Indexes.BlogPostsOrderedByCreated).Assembly, MvcApplication.DocumentStore);
-        }
 
-        private static string _bloggerSettingsFilePath;
+            // Init Blaven config
+            StartWatchConfig(AppSettingsService.BloggerSettingsPath);
+        }
 
         internal static BlogService GetBlogService(bool asyncUpdate = true) {
             var config = new BlogServiceConfig() {
                 RefreshAsync = asyncUpdate,
-                DocumentStore = MvcApplication.DocumentStore,
             };
 
             return new BlogService(config);
