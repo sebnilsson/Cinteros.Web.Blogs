@@ -95,8 +95,7 @@ namespace Cinteros.Web.Blogs.Website {
             MvcApplication.DocumentStore.Initialize();
 
             // Init Blaven config
-            _bloggerSettingsFilePath = HttpContext.Current.Server.MapPath(AppSettingsService.BloggerSettingsPath);
-            StartWatchConfig(_bloggerSettingsFilePath);
+            StartWatchConfig(AppSettingsService.BloggerSettingsPath);
             
             var service = GetBlogService();
 
@@ -107,13 +106,12 @@ namespace Cinteros.Web.Blogs.Website {
         private static string _bloggerSettingsFilePath;
 
         internal static BlogService GetBlogService(bool asyncUpdate = true) {
-            var config = new BlogServiceConfig(_bloggerSettingsFilePath) {
+            var config = new BlogServiceConfig() {
                 RefreshAsync = asyncUpdate,
                 DocumentStore = MvcApplication.DocumentStore,
             };
 
-            var service = new BlogService(config);
-            return service;
+            return new BlogService(config);
         }
 
         private static FileSystemWatcher _configWatcher;
