@@ -1,0 +1,6 @@
+The source-code for the web-app collecting all posts from the bloggers at Cinteros AB.
+
+You can find the web-app itself at:
+http://blogs.cinteros.se
+
+The repository has an automatic service-hook to AppHarbor, where it gets deployed automatically with every push to GitHub.
