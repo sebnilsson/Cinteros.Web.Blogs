@@ -192,6 +192,7 @@
     <Content Include="content\images\icon_american_flag.jpg" />
     <Content Include="content\images\rss_20x20.png" />
     <Content Include="content\reset.css" />
+    <Content Include="content\syntaxhighlighter-custom.css" />
     <Content Include="content\syntaxhighlighter-init.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

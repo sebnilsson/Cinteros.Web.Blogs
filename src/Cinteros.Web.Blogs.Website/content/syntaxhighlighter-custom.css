@@ -1,0 +1,9 @@
+﻿.syntaxhighlighter {
+    border: 1px solid #ccc;
+    max-height: 23.5em;
+    padding: 1px !important;
+    
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+}
