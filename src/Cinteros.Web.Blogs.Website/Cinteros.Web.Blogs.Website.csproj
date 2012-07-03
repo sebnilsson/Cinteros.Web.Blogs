@@ -182,6 +182,7 @@
     </Compile>
     <Compile Include="Models\BlogListViewModel.cs" />
     <Compile Include="Models\BlogSingleViewModel.cs" />
+    <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
