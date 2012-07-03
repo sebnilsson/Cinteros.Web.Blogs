@@ -75,7 +75,7 @@ namespace Cinteros.Web.Blogs.Website {
             );
         }
 
-        private static IDocumentStore DocumentStore { get; set; }
+        public static IDocumentStore DocumentStore { get; set; }
 
         protected void Application_Start() {
             AreaRegistration.RegisterAllAreas();
@@ -87,22 +87,11 @@ namespace Cinteros.Web.Blogs.Website {
         }
 
         private static void SetupBloggerViewController() {
-            var service = GetBlogService();
+            var service = new BlogService();
             MvcApplication.DocumentStore = service.Config.DocumentStore;
-
-            Raven.Client.Indexes.IndexCreation.CreateIndexes(
-                typeof(Blaven.RavenDb.Indexes.BlogPostsOrderedByCreated).Assembly, MvcApplication.DocumentStore);
-
+            
             // Init Blaven config
             StartWatchConfig(AppSettingsService.BloggerSettingsPath);
-        }
-
-        internal static BlogService GetBlogService(bool asyncUpdate = true) {
-            var config = new BlogServiceConfig() {
-                RefreshAsync = asyncUpdate,
-            };
-
-            return new BlogService(config);
         }
 
         private static FileSystemWatcher _configWatcher;

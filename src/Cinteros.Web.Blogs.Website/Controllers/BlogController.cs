@@ -8,10 +8,8 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
     public class BlogController : BaseController {
         public ActionResult Archive(int year, int month, int? page = 1) {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
-
-            var service = GetBlogService();
-
-            var selection = service.GetArchiveSelection(new DateTime(year, month, 1), pageIndex);
+            
+            var selection = this.BlogService.GetArchiveSelection(new DateTime(year, month, 1), pageIndex);
 
             var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
 
@@ -22,9 +20,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         public ActionResult Index(int? page = 1) {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
-            var service = GetBlogService();
-
-            var selection = service.GetSelection(pageIndex);
+            var selection = this.BlogService.GetSelection(pageIndex);
 
             var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
             
@@ -32,25 +28,10 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             return View("List", model);
         }
 
-        //public ActionResult Blog(string blogKey, int? page = 1) {
-        //    int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
-
-        //    var service = GetBlogService();
-
-        //    var selection = service.GetSelection(pageIndex, blogKey);
-
-        //    var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
-
-        //    ViewBag.Title = string.Format("Senaste inläggen från blog '{0}'", service.GetInfo(blogKey).Title);
-        //    return View("List", model);
-        //}
-
         public ActionResult Search(string q, int? page = 1) {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
-            var service = GetBlogService();
-
-            var selection = service.SearchPosts(q, pageIndex);
+            var selection = this.BlogService.SearchPosts(q, pageIndex);
 
             var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
 
@@ -62,9 +43,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             t = HttpUtility.UrlDecode(t);
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
-            var service = GetBlogService();
-
-            var selection = service.GetTagsSelection(t, pageIndex);
+            var selection = this.BlogService.GetTagsSelection(t, pageIndex);
 
             var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
 

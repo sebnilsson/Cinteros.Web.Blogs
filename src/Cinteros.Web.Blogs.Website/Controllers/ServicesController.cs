@@ -24,10 +24,9 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         private ActionResult GetRss(int? pageSize = DefaultPageSize, bool includeBlogContent = true) {
             int actualPageSize = Math.Min(pageSize.GetValueOrDefault(DefaultPageSize), MaxPageSize);
 
-            var service = GetBlogService();
-            service.Config.PageSize = actualPageSize;
+            this.BlogService.Config.PageSize = actualPageSize;
 
-            var selection = service.GetSelection(0);
+            var selection = this.BlogService.GetSelection(0);
 
             var rssItems = from post in selection.Posts
                            select GetPostXElement(post, includeBlogContent);
@@ -66,7 +65,11 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         }
 
         public ActionResult RefreshBlogs() {
-            var service = GetBlogService(asyncUpdate: false);
+            var synchronousConfig = new BlogServiceConfig {
+                RefreshAsync = false,
+            };
+            var service = new BlogService(synchronousConfig);
+
             service.Refresh(forceRefresh: true);
             
             return this.RedirectToRoute("Empty");

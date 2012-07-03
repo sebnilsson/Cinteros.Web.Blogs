@@ -6,6 +6,8 @@ using Cinteros.Web.Blogs.Website;
 
 namespace Cinteros.Web.Blogs.Website.Controllers {
     public abstract class BaseController : Controller {
+        public BlogService BlogService { get; protected set; }
+
         protected override void Initialize(System.Web.Routing.RequestContext requestContext) {
             base.Initialize(requestContext);
 
@@ -22,12 +24,29 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             HttpContext.Response.Redirect(requestUrlLower, true);
         }
 
+        protected override void OnActionExecuting(ActionExecutingContext filterContext) {
+            BlogService = new BlogService(MvcApplication.DocumentStore);
+        }
+
+        protected override void OnActionExecuted(ActionExecutedContext filterContext) {
+            if(filterContext.IsChildAction)
+                return;
+
+            if(filterContext.Exception != null) {
+                return;
+            }
+
+            if(BlogService != null) {
+                // TODO: Dispose
+            }
+        }
+
         public ViewResult ErrorView(object model) {
             return View("Error", model);
         }
 
-        internal BlogService GetBlogService(bool asyncUpdate = true) {
-            return MvcApplication.GetBlogService(asyncUpdate);
-        }
+        //internal BlogService GetBlogService(bool asyncUpdate = true) {
+        //    return MvcApplication.GetBlogService(asyncUpdate);
+        //}
     }
 }

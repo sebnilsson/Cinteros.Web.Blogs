@@ -10,18 +10,14 @@ using HtmlAgilityPack;
 namespace Cinteros.Web.Blogs.Website.Controllers {
     public class InfoController : BaseController {
         public ActionResult Archive() {
-            var service = GetBlogService();
-
-            var postDates = service.GetArchiveCount();
+            var postDates = this.BlogService.GetArchiveCount();
 
             return PartialView(postDates);
         }
 
         public ActionResult Blogs() {
-            var service = GetBlogService();
-
-            var blogs = from setting in service.Config.BloggerSettings
-                        let info = service.GetInfo(setting.BlogKey)
+            var blogs = from setting in this.BlogService.Config.BloggerSettings
+                        let info = this.BlogService.GetInfo(setting.BlogKey)
                         orderby info.Title ascending
                         select info;
 
@@ -29,9 +25,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         }
 
         public ActionResult Tags() {
-            var service = GetBlogService();
-
-            var tags = service.GetTagsCount();
+            var tags = this.BlogService.GetTagsCount();
 
             return PartialView(tags);
         }
