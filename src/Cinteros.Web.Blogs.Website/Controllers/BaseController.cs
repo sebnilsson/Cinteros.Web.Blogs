@@ -44,9 +44,5 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         public ViewResult ErrorView(object model) {
             return View("Error", model);
         }
-
-        //internal BlogService GetBlogService(bool asyncUpdate = true) {
-        //    return MvcApplication.GetBlogService(asyncUpdate);
-        //}
     }
 }
