@@ -32,11 +32,12 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             return PartialView(tags);
         }
 
+        public static readonly string MenuItemsCacheKey = "InfoController.MenuItems.LastUpdate";
+
         public ActionResult MenuItems() {
             var storeMenuItems = new List<MenuItem>(0);
 
-            string cacheKey = "InfoController.MenuItems.LastUpdate";
-            var lastUpdate = (this.HttpContext.Cache[cacheKey] as DateTime?).GetValueOrDefault(DateTime.MinValue);
+            var lastUpdate = (this.HttpContext.Cache[MenuItemsCacheKey] as DateTime?).GetValueOrDefault(DateTime.MinValue);
             
             var store = BlogService.Config.DocumentStore;
             using(var session = store.OpenSession()) {
@@ -50,7 +51,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                             session.Query<MenuItem>().Take(int.MaxValue).ToList().ForEach(x => session.Delete(x));
                         }
 
-                        cinterosMenuItems.ToList().ForEach(x => session.Store(x));
+                        cinterosMenuItems.ToList().ForEach(x => session.Store(x, x.Url));
 
                         session.SaveChanges();
                     });
@@ -64,7 +65,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                 storeMenuItems = session.Query<MenuItem>().Take(int.MaxValue).ToList();
             }
 
-            this.HttpContext.Cache[cacheKey] = DateTime.Now;
+            this.HttpContext.Cache[MenuItemsCacheKey] = DateTime.Now;
 
             return PartialView(storeMenuItems ?? new List<MenuItem>(0));
         }

@@ -74,5 +74,11 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             
             return this.RedirectToRoute("Empty");
         }
+
+        public ActionResult ClearMenuItems() {
+            this.HttpContext.Cache.Remove(InfoController.MenuItemsCacheKey);
+
+            return this.RedirectToRoute("Empty");
+        }
     }
 }
