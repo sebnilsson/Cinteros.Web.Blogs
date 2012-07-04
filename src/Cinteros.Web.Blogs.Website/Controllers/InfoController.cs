@@ -49,6 +49,8 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
 
                         if(cinterosMenuItems.Any()) {
                             session.Query<MenuItem>().Take(int.MaxValue).ToList().ForEach(x => session.Delete(x));
+
+                            session.SaveChanges();
                         }
 
                         cinterosMenuItems.ToList().ForEach(x => session.Store(x, Convert.ToString((uint)x.Url.GetHashCode())));
@@ -62,7 +64,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                     }
                 }
 
-                storeMenuItems = session.Query<MenuItem>().Take(int.MaxValue).ToList();
+                storeMenuItems = session.Query<MenuItem>().Take(int.MaxValue).OrderBy(x => x.Index).ToList();
             }
 
             this.HttpContext.Cache[MenuItemsCacheKey] = DateTime.Now;
@@ -90,6 +92,9 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                          let linkUrl = GetUrl(href)
                          where !string.IsNullOrWhiteSpace(href)
                          select new MenuItem(aTag.InnerText, linkUrl)).ToList();
+            for(int i = 0; i < menuItems.Count; i++) {
+                menuItems[i].Index = i;
+            }
 
             // Modify the blog's link (if it's present) to the active menu-item
             var blogItem = menuItems.FirstOrDefault(item => item.Url.Contains("blogs.cinteros.se"));
