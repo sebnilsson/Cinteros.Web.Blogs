@@ -51,7 +51,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                             session.Query<MenuItem>().Take(int.MaxValue).ToList().ForEach(x => session.Delete(x));
                         }
 
-                        cinterosMenuItems.ToList().ForEach(x => session.Store(x, x.Url));
+                        cinterosMenuItems.ToList().ForEach(x => session.Store(x, Convert.ToString((uint)x.Url.GetHashCode())));
 
                         session.SaveChanges();
                     });
