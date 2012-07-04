@@ -209,6 +209,7 @@
     <Content Include="libraries\SyntaxHighlighter\shBrushCss.js" />
     <Content Include="libraries\SyntaxHighlighter\shBrushJScript.js" />
     <Content Include="libraries\SyntaxHighlighter\shBrushPlain.js" />
+    <Content Include="libraries\SyntaxHighlighter\shBrushPowerShell.js" />
     <Content Include="libraries\SyntaxHighlighter\shBrushSql.js" />
     <Content Include="libraries\SyntaxHighlighter\shBrushXml.js" />
     <Content Include="libraries\SyntaxHighlighter\shCore.css" />
