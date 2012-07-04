@@ -114,7 +114,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             }
             
             href = href.TrimStart('/');
-            return WebsiteUrl + href;
+            return (!href.StartsWith("http")) ? (WebsiteUrl + href) : href;
         }
     }
 }
