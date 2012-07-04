@@ -97,7 +97,7 @@ h2:link { color: #222; }
     text-transform: uppercase;
 }
 
-#nav li a:hover, #nav li.current_page_item a, #nav li.current_page_parent {
+#nav a:hover, #nav a.current_page_item, #nav a.current_page_parent {
     background-color: transparent;
     border: 0 none;
     color: #ED4256;
