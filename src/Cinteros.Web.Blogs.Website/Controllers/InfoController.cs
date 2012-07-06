@@ -39,7 +39,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
 
             var lastUpdate = (this.HttpContext.Cache[MenuItemsCacheKey] as DateTime?).GetValueOrDefault(DateTime.MinValue);
             
-            var store = BlogService.Config.DocumentStore;
+            var store = this.BlogService.DocumentStore;
             using(var session = store.OpenSession()) {
                 if(lastUpdate.AddHours(8) < DateTime.Now) {
                     var storeHasData = session.Query<MenuItem>().Any();

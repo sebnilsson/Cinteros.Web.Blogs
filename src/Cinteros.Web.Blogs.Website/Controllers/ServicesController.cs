@@ -65,12 +65,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         }
 
         public ActionResult RefreshBlogs() {
-            var synchronousConfig = new BlogServiceConfig {
-                RefreshAsync = false,
-            };
-            var service = new BlogService(synchronousConfig);
-
-            service.Refresh(forceRefresh: true);
+            this.BlogService.ForceRefresh();
             
             return this.RedirectToRoute("Empty");
         }

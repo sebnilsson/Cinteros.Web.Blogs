@@ -87,8 +87,7 @@ namespace Cinteros.Web.Blogs.Website {
         }
 
         private static void SetupBloggerViewController() {
-            var service = new BlogService();
-            MvcApplication.DocumentStore = service.Config.DocumentStore;
+            DocumentStore = BlogService.GetDefaultBlogStore();
             
             // Init Blaven config
             StartWatchConfig(AppSettingsService.BloggerSettingsPath);
