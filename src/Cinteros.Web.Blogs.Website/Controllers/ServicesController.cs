@@ -54,6 +54,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                 new XElement("title", post.Title),
                 new XElement("link", post.PermaLinkAbsolute),
                 new XElement("pubDate", post.Published.ToString("r")),
+                new XElement("author", post.Author.Name),
             };
             if(includeBlogContent) {
                 itemElements = itemElements.Concat(new[] {
