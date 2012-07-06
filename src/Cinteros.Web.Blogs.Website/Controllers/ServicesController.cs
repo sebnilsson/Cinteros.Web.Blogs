@@ -31,13 +31,15 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             var rssItems = from post in selection.Posts
                            select GetPostXElement(post, includeBlogContent);
 
+            string rssUrl = "http://" + Request.Url.Host + Url.RouteUrl("RSS", null);
+
             var rss = new XDocument(
                           new XDeclaration("1.0", "UTF-8", "yes"),
                           new XElement("rss",
                               new XAttribute("version", "2.0"),
                               new XElement("channel",
                                   new XElement("title", "Cinteros Blogs RSS"),
-                                  new XElement("link", Url.RouteUrl("Empty", null, "http", Request.Url.Host)),
+                                  new XElement("link", rssUrl),
                                   new XElement("description", "RSS feed containing blog-posts from bloggers at Cinteros AB."),
                                   rssItems
                               )
