@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web.Caching;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
-using HtmlAgilityPack;
 using Cinteros.Web.Blogs.Website.Models;
-using System.Threading.Tasks;
+using HtmlAgilityPack;
 
 namespace Cinteros.Web.Blogs.Website.Controllers {
     public class InfoController : BaseController {
+        [OutputCache(Duration = DefaultCacheDuration)]
         public ActionResult Archive() {
             var postDates = this.BlogService.GetArchiveCount();
 
             return PartialView(postDates);
         }
 
+        [OutputCache(Duration = DefaultCacheDuration)]
         public ActionResult Blogs() {
             var blogs = from setting in this.BlogService.Config.BloggerSettings
                         let info = this.BlogService.GetInfo(setting.BlogKey)
@@ -26,6 +27,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             return PartialView(blogs);
         }
 
+        [OutputCache(Duration = DefaultCacheDuration)]
         public ActionResult Tags() {
             var tags = this.BlogService.GetTagsCount();
 
@@ -34,6 +36,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
 
         public static readonly string MenuItemsCacheKey = "InfoController.MenuItems.LastUpdate";
 
+        [OutputCache(Duration = DefaultCacheDuration)]
         public ActionResult MenuItems() {
             var storeMenuItems = new List<MenuItem>(0);
 

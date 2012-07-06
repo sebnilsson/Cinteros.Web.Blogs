@@ -6,6 +6,8 @@ using Cinteros.Web.Blogs.Website;
 
 namespace Cinteros.Web.Blogs.Website.Controllers {
     public abstract class BaseController : Controller {
+        public const int DefaultCacheDuration = 300;
+
         public BlogService BlogService { get; protected set; }
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext) {

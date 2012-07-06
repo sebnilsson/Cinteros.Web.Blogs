@@ -187,8 +187,12 @@ h2:link { color: #222; }
     margin: 0;
 }
 
-#sidebar #archive-nav ul li, #sidebar #blogs-nav ul li {
+#sidebar #archive-nav ul li {
     margin-left: 14px;
+}
+
+#sidebar #blogs-nav ul li {
+    margin: 0.5em 0px 0.5em 14px;     
 }
 
 #blog-intro {
