@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 
 using Blaven;
-using Cinteros.Web.Blogs.Website;
 
 namespace Cinteros.Web.Blogs.Website.Controllers {
     public abstract class BaseController : Controller {
@@ -27,19 +26,20 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext) {
-            BlogService = new BlogService(MvcApplication.DocumentStore);
+            BlogService = BlogService ?? new BlogService(MvcApplication.DocumentStore);
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext) {
-            if(filterContext.IsChildAction)
+            if(filterContext.IsChildAction) {
                 return;
+            }
 
             if(filterContext.Exception != null) {
                 return;
             }
 
             if(BlogService != null) {
-                // TODO: Dispose
+                this.BlogService.Dispose();
             }
         }
 
