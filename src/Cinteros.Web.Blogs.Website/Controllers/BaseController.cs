@@ -30,10 +30,6 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext) {
-            if(filterContext.IsChildAction) {
-                return;
-            }
-
             if(filterContext.Exception != null) {
                 return;
             }
