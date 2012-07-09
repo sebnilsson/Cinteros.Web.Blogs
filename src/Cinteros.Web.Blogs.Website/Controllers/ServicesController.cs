@@ -68,9 +68,15 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         }
 
         public ActionResult RefreshBlogs() {
-            this.BlogService.ForceRefresh();
-            
-            return this.RedirectToRoute("Empty");
+            var timer = new System.Diagnostics.Stopwatch();
+
+            timer.Start();
+            var refreshResults = this.BlogService.ForceRefresh();
+            timer.Stop();
+
+            var result = new { TimeElapsed = timer.Elapsed.TotalSeconds.ToString("#.###s"), Blogs = refreshResults.Select(x => x.Item1) };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ClearMenuItems() {
