@@ -6,7 +6,7 @@ using Cinteros.Web.Blogs.Website.Models;
 
 namespace Cinteros.Web.Blogs.Website.Controllers {
     public class BlogController : BaseController {
-        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "year;month;page")]
+        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "year;month;page", VaryByCustom = "RavenDbStaleIndexes")]
         public ActionResult Archive(int year, int month, int? page = 1) {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
             
@@ -18,7 +18,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             return View("List", model);
         }
 
-        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "page")]
+        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "page", VaryByCustom = "RavenDbStaleIndexes")]
         public ActionResult Index(int? page = 1) {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
@@ -30,7 +30,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             return View("List", model);
         }
 
-        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "q;page")]
+        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "q;page", VaryByCustom = "RavenDbStaleIndexes")]
         public ActionResult Search(string q, int? page = 1) {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
@@ -42,7 +42,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             return View("List", model);
         }
 
-        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "t;page")]
+        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "t;page", VaryByCustom = "RavenDbStaleIndexes")]
         public ActionResult Tag(string t, int? page = 1) {
             t = HttpUtility.UrlDecode(t);
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
@@ -54,6 +54,5 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             ViewBag.Title = string.Format("Inlägg taggade som '{0}'", t);
             return View("List", model);
         }
-
     }
 }

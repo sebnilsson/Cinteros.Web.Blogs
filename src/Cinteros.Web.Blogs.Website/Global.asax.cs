@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -6,6 +7,7 @@ using System.Web.Routing;
 using Blaven;
 using Raven.Client;
 using Raven.Client.Document;
+using System;
 
 namespace Cinteros.Web.Blogs.Website {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -73,6 +75,21 @@ namespace Cinteros.Web.Blogs.Website {
                 url: "",
                 defaults: new { controller = "Blog", action = "Index" }
             );
+        }
+
+        private static DateTime _lastUnstaleIndexes;
+        public override string GetVaryByCustomString(HttpContext context, string custom) {
+            if(custom.Equals("RavenDbStaleIndexes", System.StringComparison.InvariantCultureIgnoreCase)) {
+                bool staleIndexes = DocumentStore.DatabaseCommands.GetStatistics().StaleIndexes.Any();
+                if(!staleIndexes) {
+                    _lastUnstaleIndexes = DateTime.Now;
+                    return string.Empty;
+                }
+
+                return string.Format("StaleIndexsFrom_{0}", _lastUnstaleIndexes.Ticks);
+            }
+
+            return base.GetVaryByCustomString(context, custom);
         }
 
         public static IDocumentStore DocumentStore { get; set; }
