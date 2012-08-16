@@ -189,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="content\html5.js" />
+    <Content Include="content\images\post-bottom-fade.gif" />
     <Content Include="content\images\post-head_bg.gif" />
     <Content Include="content\images\bg-wrap.gif" />
     <Content Include="content\images\cinteros-logo-logotyp_top.png" />
@@ -223,10 +224,10 @@
     <Content Include="libraries\SyntaxHighlighter\shThemeMidnight.css" />
     <Content Include="libraries\SyntaxHighlighter\shThemeRDark.css" />
     <Content Include="robots.txt" />
-    <Content Include="scripts\jquery-1.7.2-vsdoc.js" />
-    <Content Include="scripts\jquery-1.7.2.js" />
-    <Content Include="scripts\jquery-1.7.2.min.js" />
     <Content Include="content\site.js" />
+    <Content Include="scripts\jquery-1.8.0-vsdoc.js" />
+    <Content Include="scripts\jquery-1.8.0.js" />
+    <Content Include="scripts\jquery-1.8.0.min.js" />
     <Content Include="scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
