@@ -210,7 +210,7 @@ h2:link { color: #222; }
     width: 640px;
 }
 
-#post-content img {
+.post-content img {
     height: auto !important;
     max-width: 100%;
     width: auto !important;
