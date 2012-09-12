@@ -7,9 +7,9 @@ using Blaven;
 
 namespace Cinteros.Web.Blogs.Website.Controllers {
     public class ServicesController : BaseController {
-        private const string ContentType = "text/xml";
-        private const int DefaultPageSize = 20;
-        private const int MaxPageSize = 50;
+        private const string ContentType = "application/rss+xml";
+        private const int DefaultPageSize = 10;
+        private const int MaxPageSize = 30;
 
         public ActionResult BasicRss(int? pageSize = DefaultPageSize) {
             Response.ContentType = ContentType;
