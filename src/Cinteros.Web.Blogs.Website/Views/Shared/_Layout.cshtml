@@ -33,7 +33,6 @@
         .Add("~/content/site.css")
         .Add("~/libraries/FancyBox/jquery.fancybox.css")
         .MvcRender("~/bundled-site.css?v=#"))
-
         
     @(Html.BundleCss()
         .Add("~/libraries/SyntaxHighlighter/shCore.css")
@@ -115,6 +114,20 @@
         .Add("~/libraries/FancyBox/jquery.fancybox.js") 
         .Add("~/content/site.js")
         .MvcRender("~/bundled-site.js?vs=#"))
+
+    <!-- ClickDimensions -->
+    <script type="text/javascript">
+        var cdScore = 5;
+        var cdJsHost = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cscript src='" + cdJsHost + "analytics.clickdimensions.com/ts.js' type='text/javascript'%3E%3C/script%3E")); 
+    </script> 
+
+    <script type="text/javascript">
+        var cdAnalytics = new clickdimensions.Analytics('analytics.clickdimensions.com');
+        cdAnalytics.setAccountKey('awbALwLxihUu2YjSNJpSg');
+        cdAnalytics.setDomain('cinteros.se');
+        cdAnalytics.trackPage();
+    </script>
     
     <script type="text/javascript">
         var _gaq = _gaq || [];
