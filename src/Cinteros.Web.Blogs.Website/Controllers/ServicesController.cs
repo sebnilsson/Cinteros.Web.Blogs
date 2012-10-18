@@ -47,7 +47,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
                           new XElement("rss",
                               new XAttribute("version", "2.0"),
                               new XElement("channel",
-                                  new XElement("title", "Cinteros Blogs RSS"),
+                                  new XElement("title", "Cinteros Blogs"),
                                   new XElement("link", rssUrl),
                                   new XElement("description", "RSS feed containing blog-posts from bloggers at Cinteros AB."),
                                   rssItems
