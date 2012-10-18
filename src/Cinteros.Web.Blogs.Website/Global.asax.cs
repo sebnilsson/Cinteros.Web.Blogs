@@ -71,6 +71,12 @@ namespace Cinteros.Web.Blogs.Website {
             );
 
             routes.MapRoute(
+                name: "CommunityRSS",
+                url: "community-rss",
+                defaults: new { controller = "Services", action = "CommunityRss" }
+            );
+
+            routes.MapRoute(
                 name: "Empty",
                 url: "",
                 defaults: new { controller = "Blog", action = "Index" }

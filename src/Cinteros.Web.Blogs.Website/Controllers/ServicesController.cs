@@ -8,25 +8,34 @@ using Blaven;
 namespace Cinteros.Web.Blogs.Website.Controllers {
     public class ServicesController : BaseController {
         private const string ContentType = "application/rss+xml";
+        private const string CommunityTagName = "community";
         private const int DefaultPageSize = 10;
         private const int MaxPageSize = 30;
 
         public ActionResult BasicRss(int? pageSize = DefaultPageSize) {
-            Response.ContentType = ContentType;
-            return GetRss(pageSize, false);
+            return GetDefaultRss(pageSize, includeBlogContent: false);
         }
 
         public ActionResult Rss(int? pageSize = DefaultPageSize) {
-            Response.ContentType = ContentType;
-            return GetRss(pageSize, true);
+            return GetDefaultRss(pageSize, includeBlogContent: true);
         }
 
-        private ActionResult GetRss(int? pageSize = DefaultPageSize, bool includeBlogContent = true) {
+        public ActionResult CommunityRss(int? pageSize = DefaultPageSize) {
+            var selection = this.BlogService.GetTagsSelection(CommunityTagName, 0);
+            return GetRssFeed(selection, pageSize, includeBlogContent: true);
+        }
+
+        private ActionResult GetDefaultRss(int? pageSize = DefaultPageSize, bool includeBlogContent = true) {
+            var selection = this.BlogService.GetSelection(0);
+            return GetRssFeed(selection, pageSize, includeBlogContent);
+        }
+
+        private ActionResult GetRssFeed(BlogSelection selection, int? pageSize = DefaultPageSize, bool includeBlogContent = true) {
+            Response.ContentType = ContentType;
+
             int actualPageSize = Math.Min(pageSize.GetValueOrDefault(DefaultPageSize), MaxPageSize);
 
             this.BlogService.Config.PageSize = actualPageSize;
-
-            var selection = this.BlogService.GetSelection(0);
 
             var rssItems = from post in selection.Posts
                            select GetPostXElement(post, includeBlogContent);
