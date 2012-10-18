@@ -40,7 +40,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
             var rssItems = from post in selection.Posts
                            select GetPostXElement(post, includeBlogContent);
 
-            string rssUrl = "http://" + Request.Url.Host + Url.RouteUrl("RSS", null);
+            string rssUrl = "http://" + Request.Url.Host + Url.RouteUrl("Empty", null);
 
             var rss = new XDocument(
                           new XDeclaration("1.0", "UTF-8", "yes"),
