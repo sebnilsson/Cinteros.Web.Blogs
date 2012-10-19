@@ -61,7 +61,7 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         private static XElement GetPostXElement(BlogPost post, bool includeBlogContent) {
             var itemElements = new[] {
                 new XElement("title", post.Title),
-                new XElement("link", post.PermaLinkAbsolute),
+                new XElement("link", post.OriginalBloggerUrl),
                 new XElement("pubDate", post.Published.ToString("r")),
                 new XElement("author", post.Author.Name),
             };
