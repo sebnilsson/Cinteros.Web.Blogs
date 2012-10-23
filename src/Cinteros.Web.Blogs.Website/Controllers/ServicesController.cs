@@ -21,21 +21,23 @@ namespace Cinteros.Web.Blogs.Website.Controllers {
         }
 
         public ActionResult CommunityRss(int? pageSize = DefaultPageSize) {
+            int actualPageSize = Math.Min(pageSize.GetValueOrDefault(DefaultPageSize), MaxPageSize);
+            this.BlogService.Config.PageSize = actualPageSize;
+
             var selection = this.BlogService.GetTagsSelection(CommunityTagName, 0);
-            return GetRssFeed(selection, pageSize, includeBlogContent: true);
+            return GetRssFeed(selection, includeBlogContent: true);
         }
 
         private ActionResult GetDefaultRss(int? pageSize = DefaultPageSize, bool includeBlogContent = true) {
+            int actualPageSize = Math.Min(pageSize.GetValueOrDefault(DefaultPageSize), MaxPageSize);
+            this.BlogService.Config.PageSize = actualPageSize;
+
             var selection = this.BlogService.GetSelection(0);
-            return GetRssFeed(selection, pageSize, includeBlogContent);
+            return GetRssFeed(selection, includeBlogContent);
         }
 
-        private ActionResult GetRssFeed(BlogSelection selection, int? pageSize = DefaultPageSize, bool includeBlogContent = true) {
+        private ActionResult GetRssFeed(BlogSelection selection, bool includeBlogContent = true) {
             Response.ContentType = ContentType;
-
-            int actualPageSize = Math.Min(pageSize.GetValueOrDefault(DefaultPageSize), MaxPageSize);
-
-            this.BlogService.Config.PageSize = actualPageSize;
 
             var rssItems = from post in selection.Posts
                            select GetPostXElement(post, includeBlogContent);
