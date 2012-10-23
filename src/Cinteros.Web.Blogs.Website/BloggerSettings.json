@@ -28,11 +28,5 @@
         "blogKey": "peterhornell",
         "passwordKey": "Blaven.Blog.Password",
         "usernameKey": "Blaven.Blog.Username"
-    },
-    {
-        "blogId": "8679755224308981868",
-        "blogKey": "sebastiannilsson",
-        "passwordKey": "Blaven.Blog.Password",
-        "usernameKey": "Blaven.Blog.Username"
     }
 ]
