@@ -1,24 +1,32 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
 using Blaven;
+using Blaven.DataSources.Blogger;
+using Blaven.RavenDb;
 using Raven.Client;
-using Raven.Client.Document;
-using System;
 
-namespace Cinteros.Web.Blogs.Website {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
+namespace Cinteros.Web.Blogs.Website
+{
+    public class MvcApplication : HttpApplication
+    {
+        private static FileSystemWatcher configWatcher;
 
-    public class MvcApplication : System.Web.HttpApplication {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters) {
+        private static DateTime lastUnstaleIndexes;
+
+        public static IDocumentStore DocumentStore { get; set; }
+
+        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        {
             filters.Add(new HandleErrorAttribute());
         }
 
-        public static void RegisterRoutes(RouteCollection routes) {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             //routes.MapHttpRoute(
@@ -31,20 +39,11 @@ namespace Cinteros.Web.Blogs.Website {
                 "Archive",
                 "{year}/{month}",
                 new { controller = "Blog", action = "Archive", },
-                new { year = @"\d+", month = @"\d+", }
-            );
+                new { year = @"\d+", month = @"\d+", });
 
-            routes.MapRoute(
-                "Search",
-                "search",
-                new { controller = "Blog", action = "Search", }
-            );
+            routes.MapRoute("Search", "search", new { controller = "Blog", action = "Search", });
 
-            routes.MapRoute(
-                "Tag",
-                "tag",
-                new { controller = "Blog", action = "Tag", }
-            );
+            routes.MapRoute("Tag", "tag", new { controller = "Blog", action = "Tag", });
 
             /*routes.MapRoute(
                 name: "Default",
@@ -55,52 +54,42 @@ namespace Cinteros.Web.Blogs.Website {
             routes.MapRoute(
                 name: "Info",
                 url: "Info/{action}",
-                defaults: new { controller = "Info", action = "Index", id = UrlParameter.Optional }
-            );
+                defaults: new { controller = "Info", action = "Index", id = UrlParameter.Optional });
 
             routes.MapRoute(
                 name: "Services",
                 url: "Services/{action}",
-                defaults: new { controller = "Services", action = "Index", id = UrlParameter.Optional }
-            );
+                defaults: new { controller = "Services", action = "Index", id = UrlParameter.Optional });
 
-            routes.MapRoute(
-                name: "RSS",
-                url: "rss",
-                defaults: new { controller = "Services", action = "Rss" }
-            );
+            routes.MapRoute(name: "RSS", url: "rss", defaults: new { controller = "Services", action = "Rss" });
 
             routes.MapRoute(
                 name: "CommunityRSS",
                 url: "community-rss",
-                defaults: new { controller = "Services", action = "CommunityRss" }
-            );
+                defaults: new { controller = "Services", action = "CommunityRss" });
 
-            routes.MapRoute(
-                name: "Empty",
-                url: "",
-                defaults: new { controller = "Blog", action = "Index" }
-            );
+            routes.MapRoute(name: "Empty", url: string.Empty, defaults: new { controller = "Blog", action = "Index" });
         }
 
-        private static DateTime _lastUnstaleIndexes;
-        public override string GetVaryByCustomString(HttpContext context, string custom) {
-            if(custom.Equals("RavenDbStaleIndexes", System.StringComparison.InvariantCultureIgnoreCase)) {
+        public override string GetVaryByCustomString(HttpContext context, string custom)
+        {
+            if (custom.Equals("RavenDbStaleIndexes", StringComparison.InvariantCultureIgnoreCase))
+            {
                 bool staleIndexes = DocumentStore.DatabaseCommands.GetStatistics().StaleIndexes.Any();
-                if(!staleIndexes) {
-                    _lastUnstaleIndexes = DateTime.Now;
+                if (!staleIndexes)
+                {
+                    lastUnstaleIndexes = DateTime.Now;
                     return string.Empty;
                 }
 
-                return string.Format("StaleIndexsFrom_{0}", _lastUnstaleIndexes.Ticks);
+                return string.Format("StaleIndexsFrom_{0}", lastUnstaleIndexes.Ticks);
             }
 
             return base.GetVaryByCustomString(context, custom);
         }
 
-        public static IDocumentStore DocumentStore { get; set; }
-
-        protected void Application_Start() {
+        protected void Application_Start()
+        {
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
@@ -112,23 +101,31 @@ namespace Cinteros.Web.Blogs.Website {
             SetupBloggerViewController();
         }
 
-        private static void SetupBloggerViewController() {
-            DocumentStore = BlogService.GetDefaultBlogStore();
-            
-            // Init Blaven config
+        private static void SetupBloggerViewController()
+        {
+            DocumentStore = RavenDbHelper.GetDefaultDocumentStore();
+
+            BlogService.InitInstance(DocumentStore);
+
+            foreach (var setting in BlogService.Instance.Settings)
+            {
+                setting.BlogDataSource = new BloggerDataSource();
+            }
+
             StartWatchConfig(AppSettingsService.BloggerSettingsPath);
         }
 
-        private static FileSystemWatcher _configWatcher;
-        private static void StartWatchConfig(string filePath) {
+        private static void StartWatchConfig(string filePath)
+        {
             var fileInfo = new FileInfo(filePath);
-            _configWatcher = new FileSystemWatcher(fileInfo.Directory.FullName, fileInfo.Name);
+            configWatcher = new FileSystemWatcher(fileInfo.Directory.FullName, fileInfo.Name);
 
-            _configWatcher.Changed += new FileSystemEventHandler(ConfigWatcher_Changed);
-            _configWatcher.EnableRaisingEvents = true;
+            configWatcher.Changed += new FileSystemEventHandler(ConfigWatcher_Changed);
+            configWatcher.EnableRaisingEvents = true;
         }
 
-        private static void ConfigWatcher_Changed(object sender, FileSystemEventArgs e) {
+        private static void ConfigWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
             HttpRuntime.UnloadAppDomain();
         }
     }
