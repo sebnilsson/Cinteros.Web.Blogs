@@ -242,7 +242,6 @@
     <Content Include="Views\Blog\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BloggerSettings.json" />
     <Content Include="Views\Shared\MenuItems.cshtml" />
     <Content Include="Views\Shared\Tags.cshtml" />
     <Content Include="Views\Shared\Archive.cshtml" />
@@ -252,6 +251,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BlogSettings.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
