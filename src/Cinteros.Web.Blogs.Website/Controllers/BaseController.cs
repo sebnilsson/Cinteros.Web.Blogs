@@ -1,6 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 
 using Blaven;
+using Blaven.Synchronization;
 
 namespace Cinteros.Web.Blogs.Website.Controllers
 {
@@ -8,48 +10,21 @@ namespace Cinteros.Web.Blogs.Website.Controllers
     {
         public const int DefaultCacheDuration = 300;
 
-        public BlogService BlogService { get; protected set; }
+        public const int PageSize = 10;
+
+        private readonly Lazy<BlogQueryService> blogQueryLazy =
+            new Lazy<BlogQueryService>(BlavenConfig.BlogQueryServiceFactory);
+
+        private readonly Lazy<BlogSyncService> blogSyncLazy =
+            new Lazy<BlogSyncService>(BlavenConfig.BlogSyncServiceFactory);
+
+        public BlogQueryService BlogQuery => this.blogQueryLazy.Value;
+
+        public BlogSyncService BlogSync => this.blogSyncLazy.Value;
 
         public ViewResult ErrorView(object model)
         {
             return this.View("Error", model);
-        }
-
-        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
-        {
-            base.Initialize(requestContext);
-
-            string requestUrl = HttpContext.Request.AppRelativeCurrentExecutionFilePath;
-            if (!string.IsNullOrWhiteSpace(System.IO.Path.GetExtension(requestUrl)))
-            {
-                return;
-            }
-
-            string requestUrlLower = requestUrl.ToLowerInvariant();
-            if (requestUrl == requestUrlLower)
-            {
-                return;
-            }
-
-            this.HttpContext.Response.Redirect(requestUrlLower, true);
-        }
-
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            this.BlogService = this.BlogService ?? new BlogService(MvcApplication.DocumentStore);
-        }
-
-        protected override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            if (filterContext.Exception != null)
-            {
-                return;
-            }
-
-            if (BlogService != null)
-            {
-                this.BlogService.Dispose();
-            }
         }
     }
 }

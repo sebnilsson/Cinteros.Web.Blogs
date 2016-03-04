@@ -1,11 +1,11 @@
-@using SquishIt.Mvc
+ï»¿@using SquishIt.Mvc
 @{
     string suffixText = "Cinteros Blogs";
     string viewBagTitle = Convert.ToString(ViewBag.Title ?? string.Empty);
     bool hasPrefixText = !string.IsNullOrWhiteSpace(viewBagTitle);
     
     string pageTitle = (hasPrefixText) ? string.Format("{0} - {1}", viewBagTitle, suffixText) : suffixText;
-    string rssUrl = "http://" + Request.Url.Host + Url.RouteUrl("RSS", null);
+    string rssUrl = "http://" + Request.Url?.Host + Url.RouteUrl("RSS", null);
 }
 <!DOCTYPE html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
@@ -63,10 +63,10 @@
             <div id="main-content">
                 <div id="sidebar">
                     <div class="sidebar-block">
-                        <label for="q" class="sidebar-label">Sök bland inlägg</label>
+                        <label for="q" class="sidebar-label">SÃ¶k bland inlÃ¤gg</label>
                         @using(var form = Html.BeginForm("Search", "Blog", FormMethod.Get)) {
                             @Html.TextBox("q")
-                            <button type="submit">Sök</button>
+                            <button type="submit">SÃ¶k</button>
                         }
                     </div>
                     <div id="rss-box" class="sidebar-block">
@@ -93,8 +93,8 @@
         </div>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="@Url.Content("~/scripts/jquery-1.8.0.min.js")"><\/script>')</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="@Url.Content("~/scripts/jquery-1.12.0.min.js")"><\/script>')</script>
 
     @(Html.BundleJavaScript()
         .Add("~/libraries/SyntaxHighlighter/shCore.js")

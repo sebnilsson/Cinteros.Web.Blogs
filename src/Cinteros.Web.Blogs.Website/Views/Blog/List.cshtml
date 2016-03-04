@@ -1,25 +1,6 @@
-﻿@model Cinteros.Web.Blogs.Website.Models.BlogListViewModel
+﻿@model BlogListViewModel
 
 @{
-    string currentAction = Convert.ToString(this.ViewContext.Controller.ValueProvider.GetValue("action").RawValue);
-
-    var previousItemRouteValues = new RouteValueDictionary(this.ViewContext.RouteData.Values);
-    previousItemRouteValues["page"] = Model.PageIndex - 1;
-
-    var nextItemRouteValues = new RouteValueDictionary(this.ViewContext.RouteData.Values);
-    nextItemRouteValues["page"] = Model.PageIndex + 1;
-
-    string t = Request.QueryString["t"];
-    if(!string.IsNullOrWhiteSpace(t)) {
-        previousItemRouteValues["t"] = t;
-        nextItemRouteValues["t"] = t;
-    }
-    string q = Request.QueryString["q"];
-    if(!string.IsNullOrWhiteSpace(q)) {
-        previousItemRouteValues["q"] = q;
-        nextItemRouteValues["q"] = q;
-    }
-
     Func<DateTime, DateTime> ToLocalDate = (dateTime) => {
         TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
         DateTime localDate = TimeZoneInfo.ConvertTimeFromUtc(dateTime, timeZone);
@@ -29,11 +10,13 @@
 
 @helper RenderTags(IEnumerable<string> tags) {
     <span class="post-info-label">Under:&nbsp;</span>
-    foreach(var tag in tags) {
+    foreach (var tag in tags)
+    {
         bool isLast = (tag == tags.Last());
-            @Html.RouteLink(tag, "Tag", new { t = Url.Encode(tag.ToLowerInvariant()), })
-        if(!isLast) {
-                <text>&nbsp;|&nbsp;</text>
+        @Html.RouteLink(tag, "Tag", new { t = Url.Encode(tag.ToLowerInvariant()), })
+        if (!isLast)
+        {
+            <text>&nbsp;|&nbsp;</text>
         }
     }
 }
@@ -43,17 +26,17 @@
     för att nå ut till så många som möjligt i det stora internationella sällskapet av andra experter och användare. <strong>Mycket nöje!</strong>
 </div>
 
-@foreach(var post in Model.Selection.Posts) {
+@foreach(var post in Model.Posts) {
     <div class="blog-post">
         <div class="post-head">
             <div class="post-head-left">
                 <h2 class="post-title">
-                    <a href="@post.OriginalBloggerUrl">@post.Title</a>
+                    <a href="@post.SourceUrl">@post.Title</a>
                 </h2>
                 <div class="clear"></div>
                 <div class="post-info">
                     <span class="post-date post-info-box">
-                        <span class="post-info-label">Postad:&nbsp;</span><span class="post-date-date">@ToLocalDate(post.Published).ToString("yyyy-MM-dd HH:mm")</span>
+                        <span class="post-info-label">Postad:&nbsp;</span><span class="post-date-date">@ToLocalDate(post.PublishedAt.Value).ToString("yyyy-MM-dd HH:mm")</span>
                     </span>
                     <span class="post-author post-info-box">
                         <span class="post-info-label">Av:&nbsp;</span><span class="post-author-name">@post.Author.Name</span>                        
@@ -75,29 +58,32 @@
             <div class="clear"></div>
         </div>
         <div class="post-comment">
-            <a href="@post.OriginalBloggerUrl#comment-form">Läs kommentarer och kommentera på artikeln</a>
+            <a href="@post.SourceUrl#comment-form">Läs kommentarer och kommentera på artikeln</a>
         </div>
     </div>
     <div class="clear"></div>
 }
 
-@if(!Model.Selection.Posts.Any()) {
+@if (!Model.Posts.Any())
+{
     <div id="no-posts-message">Inga bloginlägg hittades under de givna kriterierna.</div>
 }
 
-@if(Model.Selection.HasPreviousItems || Model.Selection.HasNextItems) {
+@if (Model.HasNewerItems || Model.HasOlderItems)
+{
     <div id="bottom-nav">
-        @if(Model.Selection.HasPreviousItems) {
+        @if (Model.HasOlderItems)
+        {
             <div id="nav-previous-items">
-                @Html.ActionLink("Visa tidigare inlägg", currentAction, previousItemRouteValues, null)
+                <a href="@Model.OlderItemsUrl">Visa tidigare inlägg</a>
             </div>
         }
 
-        @if(Model.Selection.HasNextItems) {
+        @if (Model.HasNewerItems)
+        {
             <div id="nav-next-items">
-                @Html.ActionLink("Visa äldre inlägg", currentAction, nextItemRouteValues, null)
+                <a href="@Model.NewerItemsUrl">Visa nyare inlägg</a>
             </div>
         }
     </div>
 }
-

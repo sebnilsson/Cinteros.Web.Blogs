@@ -1,11 +1,11 @@
-﻿@model System.Collections.Generic.IEnumerable<Blaven.BlogInfo>
+﻿@model IEnumerable<BlogMeta>
 
 <div id="blogs-nav">
     @if(Model.Any()) {
         <ul>
             @foreach(var blogInfo in Model) {
                 <li>
-                    <a href="@blogInfo.Url" title="@blogInfo.Subtitle">@blogInfo.Title</a>
+                    <a href="@blogInfo.Url" title="@blogInfo.Description">@blogInfo.Name</a>
                 </li>
             }
         </ul>
