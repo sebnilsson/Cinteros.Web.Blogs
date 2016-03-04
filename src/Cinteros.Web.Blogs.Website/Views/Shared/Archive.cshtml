@@ -1,12 +1,14 @@
-﻿@model System.Collections.Generic.Dictionary<DateTime, int>
+﻿@model Dictionary<DateTime, int>
 
 <div id="archive-nav">
-    @if(Model.Keys.Any()) {
+    @if (Model.Keys.Any())
+    {
         <ul>
-        @foreach(var date in Model.Keys) { 
-            <li>@Html.ActionLink(string.Format("{0} ({1})", date.ToString("yyyy-MM"), Model[date]),
-                    "archive", "blog", new { year = date.Year, month = date.Month.ToString("00") }, null)</li>
-        }
-        </ul> 
+            @foreach (var date in Model.Keys)
+            {
+                <li>
+                    @Html.ActionLink($"{date.ToString("yyyy-MM")} ({Model[date]})", "archive", "blog", new { year = date.Year, month = date.Month.ToString("00") }, null)</li>
+            }
+        </ul>
     }
 </div>

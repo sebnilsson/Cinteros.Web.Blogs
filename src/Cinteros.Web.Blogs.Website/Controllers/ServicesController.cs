@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Linq;
 
 using Blaven;
+using Blaven.Data.RavenDb2;
 
 namespace Cinteros.Web.Blogs.Website.Controllers
 {
@@ -17,36 +19,41 @@ namespace Cinteros.Web.Blogs.Website.Controllers
 
         private const int MaxPageSize = 30;
 
-        public ActionResult BasicRss(int? pageSize = DefaultPageSize)
+        [OutputCache(Duration = DefaultCacheDuration)]
+        public ActionResult BasicRss(int pageSize = DefaultPageSize)
         {
             return this.GetDefaultRss(pageSize, includeBlogContent: false);
         }
 
-        public ActionResult Rss(int? pageSize = DefaultPageSize)
+        [OutputCache(Duration = DefaultCacheDuration)]
+        public ActionResult Rss(int pageSize = DefaultPageSize)
         {
             return this.GetDefaultRss(pageSize);
         }
 
+        [OutputCache(Duration = DefaultCacheDuration)]
         public ActionResult CommunityRss(int? pageSize = DefaultPageSize)
         {
             int actualPageSize = Math.Min(pageSize.GetValueOrDefault(DefaultPageSize), MaxPageSize);
-            this.BlogService.Config.PageSize = actualPageSize;
 
-            var selection = this.BlogService.GetTagPosts(CommunityTagName);
-            return this.GetRssFeed(selection);
+            var posts = this.BlogQuery.ListPostsByTag(CommunityTagName).Take(actualPageSize).ToListAll();
+
+            return this.GetRssFeed(posts);
         }
 
-        public ActionResult RefreshBlogs()
+        [OutputCache(Duration = 60)]
+        public ActionResult Refresh()
         {
-            var refreshResults = this.BlogService.Refresh(forceRefresh: true);
+            var refreshResults = this.BlogSync.ForceUpdate();
 
             return
                 this.Json(
                     refreshResults.Select(
-                        x => new { Blog = x.BlogKey, Elapsed = x.ElapsedTime.TotalSeconds.ToString("0.###s") }),
+                        x => new { Blog = x.BlogKey, Elapsed = x.Elapsed.TotalSeconds.ToString("0.###s") }),
                     JsonRequestBehavior.AllowGet);
         }
 
+        [OutputCache(Duration = 60)]
         public ActionResult ClearMenuItems()
         {
             this.HttpContext.Cache.Remove(InfoController.MenuItemsCacheKey);
@@ -54,23 +61,20 @@ namespace Cinteros.Web.Blogs.Website.Controllers
             return this.RedirectToRoute("Empty");
         }
 
-        private ActionResult GetDefaultRss(int? pageSize = DefaultPageSize, bool includeBlogContent = true)
+        private ActionResult GetDefaultRss(int pageSize, bool includeBlogContent = true)
         {
-            int actualPageSize = Math.Min(pageSize.GetValueOrDefault(DefaultPageSize), MaxPageSize);
-            this.BlogService.Config.PageSize = actualPageSize;
+            var posts = this.BlogQuery.ListPosts().Take(pageSize).ToListAll();
 
-            var selection = this.BlogService.GetPosts();
-            return this.GetRssFeed(selection, includeBlogContent);
+            return this.GetRssFeed(posts, includeBlogContent);
         }
 
-        private ActionResult GetRssFeed(BlogPostCollection posts, bool includeBlogContent = true)
+        private ActionResult GetRssFeed(IEnumerable<BlogPost> posts, bool includeBlogContent = true)
         {
-            Response.ContentType = ContentType;
+            this.Response.ContentType = ContentType;
 
-            var rssItems = from post in posts.Posts select GetPostXElement(post, includeBlogContent);
+            var rssItems = from post in posts select GetPostXElement(post, includeBlogContent);
 
-            string rssUrl = "http://" + (this.Request.Url != null ? this.Request.Url.Host : null)
-                            + this.Url.RouteUrl("Empty", null);
+            string rssUrl = "http://" + this.Request.Url?.Host + this.Url.RouteUrl("Empty", null);
 
             var rss = new XDocument(
                 new XDeclaration("1.0", "UTF-8", "yes"),
@@ -91,16 +95,17 @@ namespace Cinteros.Web.Blogs.Website.Controllers
         {
             var itemElements = new[]
                                    {
-                                       new XElement("title", post.Title), new XElement("link", post.DataSourceUrl),
-                                       new XElement("pubDate", post.Published.ToString("r")),
+                                       new XElement("title", post.Title), new XElement("link", post.SourceUrl),
+                                       new XElement("pubDate", post.PublishedAt?.ToString("r")),
                                        new XElement("author", post.Author.Name),
                                    };
+
             if (includeBlogContent)
             {
                 itemElements = itemElements.Concat(new[] { new XElement("description", post.Content) }).ToArray();
             }
 
-            return new XElement("item", itemElements);
+            return new XElement("item", itemElements.Cast<XObject>());
         }
     }
 }

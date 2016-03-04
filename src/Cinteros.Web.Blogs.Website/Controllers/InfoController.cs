@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
+using Blaven.Data.RavenDb2;
 using Cinteros.Web.Blogs.Website.Models;
 using HtmlAgilityPack;
 
@@ -17,7 +18,12 @@ namespace Cinteros.Web.Blogs.Website.Controllers
         [OutputCache(Duration = DefaultCacheDuration)]
         public ActionResult Archive()
         {
-            var postDates = this.BlogService.GetArchiveCount();
+            var postDates =
+                this.BlogQuery.ListArchive()
+                    .ToListAll()
+                    .GroupBy(x => x.Date.Date)
+                    .Select(x => new { Date = x.First().Date, Count = x.Sum(item => item.Count) })
+                    .ToDictionary(x => x.Date, x => x.Count);
 
             return this.PartialView(postDates);
         }
@@ -25,10 +31,11 @@ namespace Cinteros.Web.Blogs.Website.Controllers
         [OutputCache(Duration = DefaultCacheDuration)]
         public ActionResult Blogs()
         {
-            var blogs = from setting in this.BlogService.Settings
-                        let info = this.BlogService.GetInfo(setting.BlogKey)
-                        orderby info.Title ascending
-                        select info;
+            var blogs = from setting in BlavenConfig.BlogSettingsLazy.Value
+                        let meta = this.BlogQuery.GetBlogMeta(setting.BlogKey)
+                        where meta != null
+                        orderby meta.Name ascending
+                        select meta;
 
             return this.PartialView(blogs);
         }
@@ -36,7 +43,14 @@ namespace Cinteros.Web.Blogs.Website.Controllers
         [OutputCache(Duration = DefaultCacheDuration)]
         public ActionResult Tags()
         {
-            var tags = this.BlogService.GetTagsCount();
+            var tags =
+                this.BlogQuery.ListTags()
+                    .ToListAll()
+                    .GroupBy(x => x.Name.ToLowerInvariant())
+                    .Select(
+                        x => new { Name = x.Select(y => y.Name).FirstOrDefault(), Count = x.Sum(item => item.Count) })
+                    .Where(x => !string.IsNullOrWhiteSpace(x.Name))
+                    .ToDictionary(x => x.Name, x => x.Count);
 
             return this.PartialView(tags);
         }
@@ -46,22 +60,23 @@ namespace Cinteros.Web.Blogs.Website.Controllers
         [OutputCache(Duration = DefaultCacheDuration)]
         public ActionResult MenuItems()
         {
-            List<MenuItem> storeMenuItems;
+            var storeMenuItems = new List<MenuItem>(0);
 
             var lastUpdate =
                 (this.HttpContext.Cache[MenuItemsCacheKey] as DateTime?).GetValueOrDefault(DateTime.MinValue);
 
-            var store = this.BlogService.DocumentStore;
-            using (var session = store.OpenSession())
+            if (lastUpdate.AddHours(8) < DateTime.Now)
             {
-                if (lastUpdate.AddHours(8) < DateTime.Now)
+                var store = BlavenConfig.DocumentStore;
+
+                using (var session = store.OpenSession())
                 {
                     var storeHasData = session.Query<MenuItem>().Any();
 
                     var task = new Task(
                         () =>
                             {
-                                var cinterosMenuItems = GetCinterosMenuItems();
+                                var cinterosMenuItems = this.GetCinterosMenuItems();
 
                                 if (cinterosMenuItems.Any())
                                 {
@@ -81,9 +96,9 @@ namespace Cinteros.Web.Blogs.Website.Controllers
                     {
                         task.Wait();
                     }
-                }
 
-                storeMenuItems = session.Query<MenuItem>().Take(int.MaxValue).OrderBy(x => x.Index).ToList();
+                    storeMenuItems = session.Query<MenuItem>().Take(int.MaxValue).OrderBy(x => x.Index).ToList();
+                }
             }
 
             this.HttpContext.Cache[MenuItemsCacheKey] = DateTime.Now;

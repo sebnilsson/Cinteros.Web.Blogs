@@ -9,56 +9,69 @@ namespace Cinteros.Web.Blogs.Website.Controllers
     public class BlogController : BaseController
     {
         [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "year;month;page",
-            VaryByCustom = "RavenDbStaleIndexes")]
+            VaryByCustom = "RavenDbLastUpdate")]
         public ActionResult Archive(int year, int month, int? page = 1)
         {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
-            var selection = this.BlogService.GetArchivePosts(new DateTime(year, month, 1), pageIndex);
+            var archiveDate = new DateTime(year, month, 1);
 
-            var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
+            var posts = this.BlogQuery.ListPostsByArchive(archiveDate);
 
-            this.ViewBag.Title = string.Format("Inlägg från {0}-{1}", year, month);
+            var model = new BlogListViewModel(posts, PageSize, pageIndex, this.ControllerContext);
+
+            this.ViewBag.Title = $"Inlägg från {year}-{month}";
+
             return this.View("List", model);
         }
 
-        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "page", VaryByCustom = "RavenDbStaleIndexes")]
+        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "page", VaryByCustom = "RavenDbLastUpdate")]
         public ActionResult Index(int? page = 1)
         {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
-            var selection = this.BlogService.GetPosts(pageIndex);
+            var posts = this.BlogQuery.ListPosts();
 
-            var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
+            var model = new BlogListViewModel(posts, PageSize, pageIndex, this.ControllerContext);
 
             this.ViewBag.Title = "Senaste inläggen";
+
             return this.View("List", model);
         }
 
-        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "q;page", VaryByCustom = "RavenDbStaleIndexes")]
+        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "q;page", VaryByCustom = "RavenDbLastUpdate")]
         public ActionResult Search(string q, int? page = 1)
         {
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
-            var selection = this.BlogService.SearchPosts(q, pageIndex);
+            string searchTerm = HttpUtility.UrlDecode(q ?? string.Empty);
 
-            var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
+            var posts = this.BlogQuery.Search(searchTerm);
 
-            this.ViewBag.Title = string.Format("Sökresultat för '{0}'", q);
+            var model = new BlogListViewModel(posts, PageSize, pageIndex, this.ControllerContext);
+
+            this.ViewBag.Title = $"Sökresultat för '{q}'";
+
             return this.View("List", model);
         }
 
-        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "t;page", VaryByCustom = "RavenDbStaleIndexes")]
+        [OutputCache(Duration = DefaultCacheDuration, VaryByParam = "t;page", VaryByCustom = "RavenDbLastUpdate")]
         public ActionResult Tag(string t, int? page = 1)
         {
-            t = HttpUtility.UrlDecode(t);
+            if (string.IsNullOrWhiteSpace(t))
+            {
+                return this.Index();
+            }
+
             int pageIndex = page.GetValueOrDefault(1) - 1; // Given pageIndex is user-friendly, not 0-based
 
-            var selection = this.BlogService.GetTagPosts(t, pageIndex);
+            string tagName = HttpUtility.UrlDecode(t);
 
-            var model = new BlogListViewModel { Selection = selection, PageIndex = page.GetValueOrDefault(1), };
+            var posts = this.BlogQuery.ListPostsByTag(tagName);
 
-            this.ViewBag.Title = string.Format("Inlägg taggade som '{0}'", t);
+            var model = new BlogListViewModel(posts, PageSize, pageIndex, this.ControllerContext);
+
+            this.ViewBag.Title = $"Inlägg taggade som '{t}'";
             return this.View("List", model);
         }
     }
